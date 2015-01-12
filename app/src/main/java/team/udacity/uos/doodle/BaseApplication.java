@@ -17,4 +17,8 @@ public class BaseApplication extends Application{
 
         VolleyHelper.init(this);
     }
+
+    public SharedPreferences getLocalPreference() {
+        return mSharedPreferences;
+    }
 }
