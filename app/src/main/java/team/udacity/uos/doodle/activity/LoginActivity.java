@@ -3,6 +3,8 @@ package team.udacity.uos.doodle.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.Request;
@@ -17,7 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity{
+    @InjectView(R.id.button_map)
+    Button mButtonMap;
     private UiLifecycleHelper uiHelper;
 
     @InjectView(R.id.login_facebook_btn)
@@ -27,10 +31,18 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.inject(this);
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
         ButterKnife.inject(this);
+
+        mButtonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Map",Toast.LENGTH_LONG).show();
+            }
+        });
 
         Session session = Session.getActiveSession();
         if (session != null && session.isOpened()) { // 세션이 있을 경우
