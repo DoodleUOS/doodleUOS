@@ -41,6 +41,8 @@ public class LoginActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"Map",Toast.LENGTH_LONG).show();
+                Intent mintent = new Intent(LoginActivity.this,MapActivity.class);
+                startActivity(mintent);
             }
         });
 
