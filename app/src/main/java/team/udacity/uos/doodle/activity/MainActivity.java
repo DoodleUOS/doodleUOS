@@ -1,116 +1,54 @@
 package team.udacity.uos.doodle.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.j256.ormlite.android.AndroidConnectionSource;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
-import team.udacity.uos.doodle.model.Weather;
-import team.udacity.uos.doodle.network.VolleyHelper;
-import team.udacity.uos.doodle.network.request.WeatherRequest;
-import team.udacity.uos.doodle.util.DBHelper;
+
 
 
 public class MainActivity extends ActionBarActivity {
 
-    @InjectView(R.id.text1)
-    TextView mText1;
-    @InjectView(R.id.button1)
-    Button mButton1;
+
+
+    private int NUM_PAGES = 3;		// 최대 페이지의 수
+
+    /* Fragment numbering */
+    public final static int FRAGMENT_PAGE1 = 0;
+    public final static int FRAGMENT_PAGE2 = 1;
+    public final static int FRAGMENT_PAGE3 = 2;
+
+    ViewPager mViewPager;			// View pager를 지칭할 변수
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButterKnife.inject(this);
+        // ViewPager를 검색하고 Adapter를 달아주고, 첫 페이지를 선정해준다.
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        mViewPager.setCurrentItem(FRAGMENT_PAGE1);
 
-        final String url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Seoul&mode=json&units=metric&cnt=7";
-
-        mButton1.setOnClickListener(new View.OnClickListener() {
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View v) {
-
-
-                Response.Listener<List<Weather>> listener = new Response.Listener<List<Weather>>() {
-                    @Override
-                    public void onResponse(List<Weather> response) {
-
-
-
-                        new AsyncTask<Void, Void, List<Weather>>() {
-                            @Override
-                            protected List<Weather> doInBackground(Void... voids) {
-                                DBHelper dbHelper = OpenHelperManager.getHelper(MainActivity.this, DBHelper.class);
-                                List<Weather> result = null;
-                                try {
-                                    Dao<Weather, Integer> dao = dbHelper.getDao(Weather.class);
-                                    result = dao.queryForAll();
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    OpenHelperManager.releaseHelper();
-                                }
-                                return result;
-                            }
-
-                            @Override
-                            protected void onPostExecute(List<Weather> weathers) {
-                                for(Weather item:weathers){
-                                    mText1.append(item.day+"/"+item.description+"/"+item.highAndLow);
-                                    mText1.append("\n\n");
-                                }
-
-                            }
-                        }.execute();
-
-
-
-                    }
-                };
-
-                Response.ErrorListener errorListener = new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                };
-
-                WeatherRequest weatherRequest = new WeatherRequest(MainActivity.this, url, listener, errorListener);
-                VolleyHelper.getRequestQueue().add(weatherRequest);
-
-
+            public void onPageSelected(int position) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+                // TODO Auto-generated method stub
             }
         });
-
-
-        DBHelper dbHelper = OpenHelperManager.getHelper(MainActivity.this, DBHelper.class);
-        ConnectionSource connectionSource = new AndroidConnectionSource(dbHelper);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        VolleyHelper.getRequestQueue().cancelAll(this);
     }
 
     @Override
@@ -120,18 +58,33 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    // FragmentPageAdater : Fragment로써 각각의 페이지를 어떻게 보여줄지 정의한다.
+    private class pagerAdapter extends FragmentPagerAdapter {
+        public pagerAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
         }
 
-        return super.onOptionsItemSelected(item);
+        // 특정 위치에 있는 Fragment를 반환해준다.
+        @Override
+        public Fragment getItem(int position) {
+
+            switch(position){
+                case 0:
+                    return new LookDoodleActivity();
+                case 1:
+                    return new DoodleActivity();
+                case 2:
+                    return new TimelineDoodleActivity();
+                default:
+                    return null;
+            }
+        }
+
+        // 생성 가능한 페이지 개수를 반환해준다.
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return NUM_PAGES;
+        }
     }
 }
