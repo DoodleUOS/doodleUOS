@@ -40,7 +40,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             gps.showSettingsAlert();
         }
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 14));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16));
         map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Here!!"));
     }
 
