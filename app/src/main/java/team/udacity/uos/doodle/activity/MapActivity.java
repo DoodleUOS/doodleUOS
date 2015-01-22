@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,7 +40,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             gps.showSettingsAlert();
         }
 
-        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 6));
         map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Here!!"));
     }
 
