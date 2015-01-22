@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import team.udacity.uos.doodle.R;
 
@@ -21,7 +21,7 @@ public class TimelineDoodleActivity extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.activity_timelinedoodle, container, false);
+        RelativeLayout layout = (RelativeLayout)inflater.inflate(R.layout.activity_timelinedoodle, container, false);
         return layout;
     }
 }
