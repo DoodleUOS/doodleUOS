@@ -3,7 +3,6 @@ package team.udacity.uos.doodle.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,30 +29,15 @@ public class LoginActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
-        uiHelper = new UiLifecycleHelper(this, callback);
-        uiHelper.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_login);
+                uiHelper = new UiLifecycleHelper(this, callback);
+                uiHelper.onCreate(savedInstanceState);
 
-        ButterKnife.inject(this);
+                        ButterKnife.inject(this);
 
-        mButtonMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Map",Toast.LENGTH_LONG).show();
-                Intent mintent = new Intent(LoginActivity.this,MapActivity.class);
-                startActivity(mintent);
-            }
-        });
-
-        Session session = Session.getActiveSession();
-        if (session != null && session.isOpened()) { // 세션이 있을 경우
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else { // 아닐 경우
-
-        }
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
     }
 
     public void onResume() {
