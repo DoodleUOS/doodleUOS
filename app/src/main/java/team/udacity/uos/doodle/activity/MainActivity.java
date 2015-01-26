@@ -8,7 +8,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
 import team.udacity.uos.doodle.R;
-
+import team.udacity.uos.doodle.fragment.DoodleFragment;
+import team.udacity.uos.doodle.fragment.LookDoodleFragment;
+import team.udacity.uos.doodle.fragment.TimelineDoodleFragment;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -70,11 +72,11 @@ public class MainActivity extends ActionBarActivity {
 
             switch(position){
                 case 0:
-                    return new LookDoodleActivity();
+                    return new LookDoodleFragment();
                 case 1:
-                    return new DoodleActivity();
+                    return new DoodleFragment();
                 case 2:
-                    return new TimelineDoodleActivity();
+                    return new TimelineDoodleFragment();
                 default:
                     return null;
             }

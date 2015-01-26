@@ -1,4 +1,4 @@
-package team.udacity.uos.doodle.activity;
+package team.udacity.uos.doodle.util;
 
 import android.app.AlertDialog;
 import android.app.Service;

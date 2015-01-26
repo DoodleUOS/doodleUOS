@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 
-public class LoginActivity extends Activity{
+public class LoginActivity extends Activity {
     @InjectView(R.id.button_map)
     Button mButtonMap;
     private UiLifecycleHelper uiHelper;
@@ -29,15 +29,15 @@ public class LoginActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_login);
-                uiHelper = new UiLifecycleHelper(this, callback);
-                uiHelper.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
 
-                        ButterKnife.inject(this);
+        ButterKnife.inject(this);
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onResume() {

@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import team.udacity.uos.doodle.R;
+import team.udacity.uos.doodle.util.GpsInfo;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
