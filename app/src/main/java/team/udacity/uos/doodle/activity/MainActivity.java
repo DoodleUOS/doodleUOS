@@ -16,7 +16,6 @@ import team.udacity.uos.doodle.fragment.TimelineDoodleFragment;
 public class MainActivity extends ActionBarActivity {
 
 
-
     private int NUM_PAGES = 3;		// 최대 페이지의 수
 
     /* Fragment numbering */
@@ -26,11 +25,10 @@ public class MainActivity extends ActionBarActivity {
 
     ViewPager mViewPager;			// View pager를 지칭할 변수
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_maindoodle);
 
         // ViewPager를 검색하고 Adapter를 달아주고, 첫 페이지를 선정해준다.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -50,7 +48,10 @@ public class MainActivity extends ActionBarActivity {
             public void onPageScrollStateChanged(int arg0) {
                 // TODO Auto-generated method stub
             }
+
+
         });
+
     }
 
     @Override
