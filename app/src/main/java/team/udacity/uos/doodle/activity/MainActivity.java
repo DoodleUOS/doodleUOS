@@ -60,6 +60,8 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+
+
     // FragmentPageAdater : Fragment로써 각각의 페이지를 어떻게 보여줄지 정의한다.
     private class pagerAdapter extends FragmentPagerAdapter {
         public pagerAdapter(android.support.v4.app.FragmentManager fm) {

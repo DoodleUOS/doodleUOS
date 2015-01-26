@@ -29,7 +29,7 @@ public class BaseRequest extends Request<JSONObject> {
     private Context mContext;
 
     public BaseRequest(Context context, String url, Response.ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(Method.POST, url, errorListener);
         setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mSharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         mContext = context;
@@ -37,7 +37,7 @@ public class BaseRequest extends Request<JSONObject> {
     }
 
     public BaseRequest(Context context, String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(Method.POST, url, errorListener);
         setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mSharedPreferences = ((BaseApplication) context.getApplicationContext()).getLocalPreference();
         mListener = listener;

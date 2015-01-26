@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -16,6 +17,9 @@ import com.facebook.widget.LoginButton;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
+import team.udacity.uos.doodle.model.Member;
+import team.udacity.uos.doodle.network.VolleyHelper;
+import team.udacity.uos.doodle.network.request.LoginRequest;
 
 public class LoginActivity extends Activity {
     private UiLifecycleHelper uiHelper;
@@ -84,18 +88,26 @@ public class LoginActivity extends Activity {
             public void onCompleted(GraphUser user, Response response) {
                 if (session == Session.getActiveSession()) {
                     if (user != null) {
-                        // myId = user.getId();
-                        // myName = user.getName();
-                        // myLink = user.getLink();
 
-                        // 회원가입 이부분에서 진행하기
+                        com.android.volley.Response.Listener<Member> listener = new com.android.volley.Response.Listener<Member>() {
+                            @Override
+                            public void onResponse(Member response) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        };
 
-                        String result = user.getId() + "\n" + user.getName() + "\n" + user.getLink();
-                        Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
+                        com.android.volley.Response.ErrorListener errorListener = new com.android.volley.Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getBaseContext(), "통신상태가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        };
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        LoginRequest loginRequest = new LoginRequest(LoginActivity.this, listener, errorListener);
+                        loginRequest.setParameter(user.getId(), user.getName(), user.getLink());
+                        VolleyHelper.getRequestQueue().add(loginRequest);
                     }
                 }
                 if (response.getError() != null) {

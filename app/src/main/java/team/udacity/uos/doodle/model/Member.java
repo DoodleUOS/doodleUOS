@@ -4,7 +4,6 @@ public class Member {
     private int memNo;
     private String memName;
     private String memFbNo;
-    private String memFbProf;
     private String memFbUrl;
     private String memId;
 
@@ -12,11 +11,10 @@ public class Member {
 
     }
 
-    public Member(int memNo, String memName, String memFbNo, String memFbProf, String memFbUrl, String memId) {
+    public Member(int memNo, String memName, String memFbNo, String memFbUrl, String memId) {
         this.memNo = memNo;
         this.memName = memName;
         this.memFbNo = memFbNo;
-        this.memFbProf = memFbProf;
         this.memFbUrl = memFbUrl;
         this.memId = memId;
     }
@@ -43,14 +41,6 @@ public class Member {
 
     public void setMemFbNo(String memFbNo) {
         this.memFbNo = memFbNo;
-    }
-
-    public String getMemFbProf() {
-        return memFbProf;
-    }
-
-    public void setMemFbProf(String memFbProf) {
-        this.memFbProf = memFbProf;
     }
 
     public String getMemFbUrl() {
