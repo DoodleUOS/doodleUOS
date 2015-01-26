@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maindoodle);
+        setContentView(R.layout.fragment_main);
 
         // ViewPager를 검색하고 Adapter를 달아주고, 첫 페이지를 선정해준다.
         mViewPager = (ViewPager) findViewById(R.id.pager);
