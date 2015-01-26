@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:weightSum="7">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

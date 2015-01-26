@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import team.udacity.uos.doodle.R;
@@ -16,7 +17,6 @@ import team.udacity.uos.doodle.fragment.TimelineDoodleFragment;
 public class MainActivity extends ActionBarActivity {
 
 
-
     private int NUM_PAGES = 3;		// 최대 페이지의 수
 
     /* Fragment numbering */
@@ -25,6 +25,8 @@ public class MainActivity extends ActionBarActivity {
     public final static int FRAGMENT_PAGE3 = 2;
 
     ViewPager mViewPager;			// View pager를 지칭할 변수
+    private Toolbar toolbar;
+
 
 
     @Override
@@ -50,7 +52,16 @@ public class MainActivity extends ActionBarActivity {
             public void onPageScrollStateChanged(int arg0) {
                 // TODO Auto-generated method stub
             }
+
+
         });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     @Override
