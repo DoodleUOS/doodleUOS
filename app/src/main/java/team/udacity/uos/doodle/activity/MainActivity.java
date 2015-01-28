@@ -2,6 +2,7 @@ package team.udacity.uos.doodle.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -75,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
 
     // FragmentPageAdater : Fragment로써 각각의 페이지를 어떻게 보여줄지 정의한다.
     private class pagerAdapter extends FragmentPagerAdapter {
-        public pagerAdapter(android.support.v4.app.FragmentManager fm) {
+        public pagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

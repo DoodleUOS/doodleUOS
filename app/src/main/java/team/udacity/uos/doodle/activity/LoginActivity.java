@@ -1,7 +1,9 @@
 package team.udacity.uos.doodle.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import team.udacity.uos.doodle.R;
 import team.udacity.uos.doodle.model.Member;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.LoginRequest;
+import team.udacity.uos.doodle.util.Constants;
 
 public class LoginActivity extends Activity {
     private UiLifecycleHelper uiHelper;
@@ -92,6 +95,14 @@ public class LoginActivity extends Activity {
                         com.android.volley.Response.Listener<Member> listener = new com.android.volley.Response.Listener<Member>() {
                             @Override
                             public void onResponse(Member response) {
+                                SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor prefEditor = prefs.edit();
+
+                                prefEditor.putInt(Constants.USER_NO, response.getMemNo());
+                                prefEditor.putString(Constants.USER_FB_NO, response.getMemFbNo());
+                                prefEditor.putString(Constants.USER_FB_NAME, response.getMemName());
+                                prefEditor.putString(Constants.USER_FB_LINK, response.getMemFbUrl());
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -102,6 +113,7 @@ public class LoginActivity extends Activity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(getBaseContext(), "통신상태가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                                session.closeAndClearTokenInformation();
                             }
                         };
 
