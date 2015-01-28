@@ -3,6 +3,14 @@
     package="team.udacity.uos.doodle" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:name=".BaseApplication"
@@ -10,7 +18,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/real_app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/real_app_name" >
@@ -20,44 +27,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/real_app_name" >
         </activity>
-
-        <activity
-            android:name="com.facebook.LoginActivity">
+        <activity android:name="com.facebook.LoginActivity" >
         </activity>
-
         <activity
             android:name=".activity.MapActivity"
             android:label="@string/map_app_name" >
         </activity>
 
-        <service android:name=".GpsInfo"></service>
+        <service android:name=".GpsInfo" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDBoTEaOHcQoG8617I4TxM-de7gAGVvV7g"/>
-
+            android:value="AIzaSyDBoTEaOHcQoG8617I4TxM-de7gAGVvV7g" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".activity.DetailViewActivity"
+            android:label="@string/title_activity_detail_view" >
+        </activity>
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"/>
 
 </manifest>

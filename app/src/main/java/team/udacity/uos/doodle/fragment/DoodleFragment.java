@@ -1,19 +1,25 @@
 package team.udacity.uos.doodle.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import team.udacity.uos.doodle.R;
+import team.udacity.uos.doodle.activity.DetailViewActivity;
 
 /**
  * Created by include on 2015. 1. 21..
  */
 public class DoodleFragment extends Fragment {
 
+    EditText mEditTextDetailView;
+    Button mButtonDetailView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +30,17 @@ public class DoodleFragment extends Fragment {
 
         LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.activity_doodle, container, false);
 
+        mEditTextDetailView = (EditText) layout.findViewById(R.id.editTextDetailView);
+        mButtonDetailView = (Button) layout.findViewById(R.id.buttonDetailView);
+        mButtonDetailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int doodleNo = Integer.parseInt(String.valueOf(mEditTextDetailView.getText()));
+                Intent mdetailintent = new Intent(getActivity(), DetailViewActivity.class);
+                mdetailintent.putExtra("doodleNo", doodleNo);
+                startActivity(mdetailintent);
+            }
+        });
         return layout;
     }
 }
