@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -15,6 +16,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.google.android.gcm.GCMRegistrar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,6 +32,9 @@ public class LoginActivity extends Activity {
     @InjectView(R.id.login_facebook_btn)
     LoginButton mLoginButton;
 
+    String regId;
+    Context mcontext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,19 @@ public class LoginActivity extends Activity {
 
         Session session = Session.getActiveSession();
         if (session != null && session.isOpened()) { // 세션이 있을 경우
+
+            if (GCMRegistrar.getRegistrationId(this).equals("")){
+                try {
+                    //registerDevice();
+                    //regId = GCMRegistrar.getRegistrationId(this);
+
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -86,6 +104,7 @@ public class LoginActivity extends Activity {
     }
 
     private void makeMeRequest(final Session session) {
+
         Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
             @Override
             public void onCompleted(GraphUser user, Response response) {
@@ -117,8 +136,13 @@ public class LoginActivity extends Activity {
                             }
                         };
 
+
+
+
+
+
                         LoginRequest loginRequest = new LoginRequest(LoginActivity.this, listener, errorListener);
-                        loginRequest.setParameter(user.getId(), user.getName(), user.getLink());
+                        loginRequest.setParameter(user.getId(), user.getName(), user.getLink(), regId);
                         VolleyHelper.getRequestQueue().add(loginRequest);
                     }
                 }
@@ -136,5 +160,30 @@ public class LoginActivity extends Activity {
             onSessionStateChange(session, state, exception);
         }
     };
+
+    private void registerDevice() {
+
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        regId = GCMRegistrar.getRegistrationId(this);
+        Log.i("gcm","registrationId");
+        if (regId.equals("")) {
+
+            GCMRegistrar.register(getBaseContext(), BasicInfo.PROJECT_ID);
+            Log.i("gcm","registrationId2");
+
+        } else {
+
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+
+            } else {
+
+                GCMRegistrar.register(getBaseContext(), BasicInfo.PROJECT_ID);
+
+            }
+
+
+        }
+    }
 
 }
