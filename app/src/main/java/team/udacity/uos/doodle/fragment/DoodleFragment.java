@@ -1,8 +1,10 @@
 package team.udacity.uos.doodle.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +15,38 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.QueryBuilder;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 import team.udacity.uos.doodle.activity.DetailViewActivity;
 import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.DoodleUploadRequest;
+import team.udacity.uos.doodle.util.DBHelper;
 
 /**
  * Created by include on 2015. 1. 21..
  */
 public class DoodleFragment extends Fragment {
 
+    @InjectView(R.id.editTextLocation)
     EditText mEditTextLocation;
+    @InjectView(R.id.editTextContext)
     EditText mEditTextContext;
+    @InjectView(R.id.buttonDoodleUpload)
     Button mButtonDoodleUpload;
 
+    @InjectView(R.id.editTextDetailView)
     EditText mEditTextDetailView;
+    @InjectView(R.id.buttonDetailView)
     Button mButtonDetailView;
 
     @Override
@@ -42,10 +59,8 @@ public class DoodleFragment extends Fragment {
 
         LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.activity_doodle, container, false);
 
-        mEditTextLocation = (EditText) layout.findViewById(R.id.editTextLocation);
-        mEditTextContext = (EditText) layout.findViewById(R.id.editTextContext);
+        ButterKnife.inject(this, layout);
 
-        mButtonDoodleUpload = (Button) layout.findViewById(R.id.buttonDoodleUpload);
         mButtonDoodleUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +81,29 @@ public class DoodleFragment extends Fragment {
                             return;
                         } else{
                             Toast.makeText(getActivity(), "[성공] 글번호 : " + response.getDooNo(), Toast.LENGTH_SHORT).show();
+
+
+                            new AsyncTask<Void, Void, List<Doodle>>(){
+                                @Override
+                                protected List<Doodle> doInBackground(Void... params) {
+                                    DBHelper dbHelper = OpenHelperManager.getHelper(getActivity(), DBHelper.class);
+                                    List<Doodle> items = null;
+                                    try {
+                                        final Dao<Doodle, Long> dao = dbHelper.getDao(Doodle.class);
+                                        items = dao.queryForAll();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    OpenHelperManager.releaseHelper();
+                                    return items;
+                                }
+
+                                @Override
+                                protected void onPostExecute(List<Doodle> doodles) {
+                                    // 여기서 하고싶은거 하면 됨
+                                    Log.i("Help222","Database size : " + doodles.size());
+                                }
+                            }.execute();
 
                             Intent mDetailIntent = new Intent(getActivity(), DetailViewActivity.class);
                             mDetailIntent.putExtra("doodleNo", response.getDooNo());
@@ -89,8 +127,6 @@ public class DoodleFragment extends Fragment {
 
 
         // 임시 테스트용
-        mEditTextDetailView = (EditText) layout.findViewById(R.id.editTextDetailView);
-        mButtonDetailView = (Button) layout.findViewById(R.id.buttonDetailView);
         mButtonDetailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

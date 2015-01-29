@@ -37,10 +37,10 @@ public class TimelineDoodleFragment extends Fragment {
     ListView mListView;
     @InjectView(R.id.button_map)
     Button mButtonMap;
-
-    TimeLineAdapter mAdapter;
     @InjectView(R.id.button_map2)
     Button mButtonMap2;
+
+    TimeLineAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

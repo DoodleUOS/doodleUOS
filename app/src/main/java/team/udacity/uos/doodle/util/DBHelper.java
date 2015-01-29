@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.model.Weather;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper{
@@ -36,7 +37,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper{
             pref.edit()
                     .remove(Constants.PREF_CONTACT_SYNC_DATE)
                     .apply();
-            TableUtils.createTable(connectionSource, Weather.class);
+            TableUtils.createTable(connectionSource, Doodle.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,7 +46,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            TableUtils.dropTable(connectionSource, Weather.class, true);
+            TableUtils.dropTable(connectionSource, Doodle.class, true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
