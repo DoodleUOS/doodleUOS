@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.facebook.widget.ProfilePictureView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +73,11 @@ public class TimeLineAdapter extends BaseAdapter {
             } else {
                 messege = String.format("%s 에 낙서를 남겼습니다.", timeline.getDooLoca());
             }
+            holder.profilePictureView.setProfileId(timeline.getMemFbNo());
         } else {
             if(timeline.getTagTar() == myNo){
                 messege = String.format("%s 님이 %s에서 나에게 낙서를 남겼습니다." ,timeline.getMemNameT() ,timeline.getDooLoca());
+                holder.profilePictureView.setProfileId(timeline.getMemFbNoT());
             }
         }
         holder.message.setText(messege);
@@ -84,6 +88,8 @@ public class TimeLineAdapter extends BaseAdapter {
 
     public class ViewHolder {
         public TimeLine timeline;
+        @InjectView(R.id.timeline_img)
+        ProfilePictureView profilePictureView;
         @InjectView(R.id.timeline_messege)
         TextView message;
         @InjectView(R.id.timeline_date)
@@ -91,6 +97,7 @@ public class TimeLineAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             ButterKnife.inject(this, view);
+            profilePictureView.setCropped(true);
         }
 
     }

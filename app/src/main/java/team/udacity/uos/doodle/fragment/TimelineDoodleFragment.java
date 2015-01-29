@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.widget.ProfilePictureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,12 @@ public class TimelineDoodleFragment extends Fragment {
             @Override
             public void onResponse(List<TimeLine> response) {
                 mAdapter.addAll(response);
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // 인행아 여기에 클릭했을때 이벤트 넣으면 돼
+                    }
+                });
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {

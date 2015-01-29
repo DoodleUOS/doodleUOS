@@ -23,7 +23,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCMIntentService";
 	public DevicePolicyManager devicePolicyManager;
 	public ComponentName adminComponent;
-	
+
 	NotificationManager notiManager;
 	Vibrator vibrator;
 	final static int MyNoti = 0;
@@ -35,7 +35,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         Log.d("gcm", "GCMIntentService() called.");
     }
-    
+
 
 
     @Override
@@ -44,10 +44,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     	BasicInfo.RegistrationId = registrationId;
 
-		
+
 
     }
-    
+
 
 
     @Override
@@ -66,20 +66,20 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
 	protected void onDeletedMessages(Context context, int total) {
     	Log.d(TAG, "onDeletedMessages called.");
-    	
+
     	super.onDeletedMessages(context, total);
 	}
 
 	@Override
 	protected boolean onRecoverableError(Context context, String errorId) {
 		Log.d(TAG, "onRecoverableError called.");
-		
+
 		return super.onRecoverableError(context, errorId);
 	}
 
 	@Override
     public void onMessage(Context context, Intent intent) {
-		
+
 		String msg = "";
 		String from = "";
 		String action = "";
@@ -91,7 +91,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.i("teacher",from + "으로부터 메세지 : "+msg);
 
         }
-        
+
         notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		// ----------알림설정----------//
@@ -101,24 +101,24 @@ public class GCMIntentService extends GCMBaseIntentService {
 		noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
 		noti.flags = Notification.FLAG_AUTO_CANCEL;
 		Intent newIntent = new Intent(getBaseContext(), DetailViewActivity.class);
-		
+
 		//PendingIntent pendingI = PendingIntent.getActivity(GCMIntentService.this, 0, newIntent, newIntent.FLAG_ACTIVITY_NEW_TASK);
 		//noti.setLatestEventInfo(GCMIntentService.this, "Smart Class",from + " : " + msg, pendingI);
 		notiManager.notify(MyNoti, noti);
 		vibrator.vibrate(1000);
 
 
-		
+
     }
 
 	/**
 	 * Send status messages for toast display
-	 * 
+	 *
 	 * @param context
 	 * @param message
 	 */
 	static void sendToastMessage(Context context, String message) {
 
     }
-    
+
 }
