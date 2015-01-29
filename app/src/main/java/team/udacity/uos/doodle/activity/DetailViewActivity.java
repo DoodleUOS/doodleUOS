@@ -49,7 +49,13 @@ public class DetailViewActivity extends ActionBarActivity {
         Response.Listener<Doodle> listener = new Response.Listener<Doodle>() {
             @Override
             public void onResponse(Doodle response) {
-                Toast.makeText(getBaseContext(), "[성공] 글번호 : " + response.getDooNo() + " 작성자번호 : " + response.getDooMemNo() + " 글 내용 : " + response.getDooCon(), Toast.LENGTH_SHORT).show();
+                if(response.getDooNo() == 0){
+                    Toast.makeText(getBaseContext(), "[실패]", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(getBaseContext(), "[성공] 글번호 : " + response.getDooNo() + " 작성자번호 : " + response.getDooMemNo() + " 글 내용 : " + response.getDooCon()
+                        + " 작성자 이름 : " + response.getMemName(), Toast.LENGTH_SHORT).show();
                 mTextViewDetailLocation.setText(response.getDooLoca());
                 mTextViewDetailAuth.setText("작성자");
                 mTextViewDetailContext.setText(response.getDooCon());

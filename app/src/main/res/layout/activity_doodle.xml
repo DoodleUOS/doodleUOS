@@ -13,16 +13,16 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/editTextLocation"
         android:layout_weight="1"
-        android:hint="장소하기"/>
+        android:hint="장소"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:gravity="top"
-        android:id="@+id/editText2"
+        android:id="@+id/editTextContext"
         android:hint="낙서"
         android:layout_weight="5"/>
 
@@ -48,7 +48,7 @@
             android:text="친구태그"/>
 
         <Button
-
+            android:id="@+id/buttonDoodleUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom = "true"

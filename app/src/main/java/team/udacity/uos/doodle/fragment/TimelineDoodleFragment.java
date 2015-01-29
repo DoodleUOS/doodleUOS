@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -40,6 +39,8 @@ public class TimelineDoodleFragment extends Fragment {
     Button mButtonMap;
 
     TimeLineAdapter mAdapter;
+    @InjectView(R.id.button_map2)
+    Button mButtonMap2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class TimelineDoodleFragment extends Fragment {
         return layout;
     }
 
-    private void init(){
+    private void init() {
         mAdapter = new TimeLineAdapter(getActivity(), new ArrayList<TimeLine>());
         mListView.setAdapter(mAdapter);
 
@@ -75,13 +76,24 @@ public class TimelineDoodleFragment extends Fragment {
 
         SharedPreferences prefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         TimeLineRequest timeLineRequest = new TimeLineRequest(getActivity(), listener, errorListener);
-        timeLineRequest.setParameter(prefs.getInt(Constants.USER_NO,-1));
+        timeLineRequest.setParameter(prefs.getInt(Constants.USER_NO, -1));
         VolleyHelper.getRequestQueue().add(timeLineRequest);
 
         mButtonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapIntent = new Intent(getActivity(),MapActivity.class);
+                Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+                mapIntent.putExtra("lat",0);
+                mapIntent.putExtra("long",0);
+                startActivity(mapIntent);
+            }
+        });
+        mButtonMap2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+                mapIntent.putExtra("lat",37.58342);
+                mapIntent.putExtra("long",127.054958);
                 startActivity(mapIntent);
             }
         });

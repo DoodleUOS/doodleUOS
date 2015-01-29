@@ -21,6 +21,10 @@ public class Doodle {
     private Double dooLat;
     @DatabaseField
     private Double dooLong;
+    @DatabaseField
+    private String memName;
+    @DatabaseField
+    private String memFbNo;
 
     public Doodle(){
 
@@ -89,4 +93,13 @@ public class Doodle {
     public void setDooLong(Double dooLong) {
         this.dooLong = dooLong;
     }
+
+    public String getMemFbNo() { return memFbNo; }
+
+    public void setMemFbNo(String memFbNo) { this.memFbNo = memFbNo; }
+
+    public String getMemName() { return memName; }
+
+    public void setMemName(String memName) { this.memName = memName; }
+
 }
