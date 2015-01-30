@@ -252,6 +252,7 @@ public class LoginActivity extends Activity {
                                 prefEditor.putString(Constants.USER_FB_NO, response.getMemFbNo());
                                 prefEditor.putString(Constants.USER_FB_NAME, response.getMemName());
                                 prefEditor.putString(Constants.USER_FB_LINK, response.getMemFbUrl());
+                                prefEditor.apply();
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);

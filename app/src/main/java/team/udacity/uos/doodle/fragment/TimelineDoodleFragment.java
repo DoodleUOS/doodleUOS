@@ -12,10 +12,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.facebook.widget.ProfilePictureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,6 @@ public class TimelineDoodleFragment extends Fragment {
     ListView mListView;
     @InjectView(R.id.button_map)
     Button mButtonMap;
-    @InjectView(R.id.button_map2)
-    Button mButtonMap2;
 
     TimeLineAdapter mAdapter;
 
@@ -71,6 +69,12 @@ public class TimelineDoodleFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // 인행아 여기에 클릭했을때 이벤트 넣으면 돼
+                        Toast.makeText(getActivity(), "메모가 위치한 곳을 보여줘요.", Toast.LENGTH_SHORT).show();
+
+                        Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+                        mapIntent.putExtra("lat",mAdapter.getItem(position).getDooLat());
+                        mapIntent.putExtra("long",mAdapter.getItem(position).getDooLong());
+                        startActivity(mapIntent);
                     }
                 });
             }
@@ -96,15 +100,7 @@ public class TimelineDoodleFragment extends Fragment {
                 startActivity(mapIntent);
             }
         });
-        mButtonMap2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapIntent = new Intent(getActivity(), MapActivity.class);
-                mapIntent.putExtra("lat",37.58342);
-                mapIntent.putExtra("long",127.054958);
-                startActivity(mapIntent);
-            }
-        });
+
     }
 }
 
