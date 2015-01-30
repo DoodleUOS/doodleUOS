@@ -12,8 +12,10 @@ public class TimeLine {
     private int tagTar;
     private String memNameT;
     private String memFbNoT;
+    private Double dooLat;
+    private Double dooLong;
 
-    public TimeLine(int dooNo, int dooMemNo, String dooLoca, String dooDate, String memFbNo, int tagTar, String memNameT, String memFbNoT) {
+    public TimeLine(int dooNo, int dooMemNo, String dooLoca, String dooDate, String memFbNo, int tagTar, String memNameT, String memFbNoT, Double dooLat, Double dooLong) {
         this.dooNo = dooNo;
         this.dooMemNo = dooMemNo;
         this.dooLoca = dooLoca;
@@ -22,6 +24,8 @@ public class TimeLine {
         this.tagTar = tagTar;
         this.memNameT = memNameT;
         this.memFbNoT = memFbNoT;
+        this.dooLat = dooLat;
+        this.dooLong = dooLong;
     }
 
     public int getDooNo() {
@@ -86,6 +90,22 @@ public class TimeLine {
 
     public void setMemFbNoT(String memFbNoT) {
         this.memFbNoT = memFbNoT;
+    }
+
+    public Double getDooLat() {
+        return dooLat;
+    }
+
+    public void setDooLat(Double dooLat) {
+        this.dooLat = dooLat;
+    }
+
+    public Double getDooLong() {
+        return dooLong;
+    }
+
+    public void setDooLong(Double dooLong) {
+        this.dooLong = dooLong;
     }
 }
 

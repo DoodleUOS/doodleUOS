@@ -65,12 +65,21 @@ public class DoodleFragment extends Fragment {
         mButtonDoodleUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String mLocation = String.valueOf(mEditTextLocation.getText());
+                String mContext = String.valueOf(mEditTextContext.getText());
+
+                if(mLocation.length() == 0 || mContext.length() == 0){
+                    Toast.makeText(getActivity(), "장소와 내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
                 SharedPreferences prefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
                 Doodle mDoodle = new Doodle();
                 mDoodle.setDooMemNo(prefs.getInt(Constants.USER_NO, -1));  // 임시
-                mDoodle.setDooLoca(String.valueOf(mEditTextLocation.getText()));
-                mDoodle.setDooCon(String.valueOf(mEditTextContext.getText()));
+                mDoodle.setDooLoca(mLocation);
+                mDoodle.setDooCon(mContext);
                 mDoodle.setDooLat(37.570267);    // 임시
                 mDoodle.setDooLong(126.987517);   // 임시
 

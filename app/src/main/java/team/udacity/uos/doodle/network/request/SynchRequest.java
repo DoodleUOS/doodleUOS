@@ -16,19 +16,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import team.udacity.uos.doodle.model.TimeLine;
+import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.network.Urls;
 
 /**
  * Created by JYPark88 on 2015-01-28.
  */
-public class TimeLineRequest extends BaseRequest{
-    Response.Listener<List<TimeLine>> mListener;
+public class SynchRequest extends BaseRequest{
+    Response.Listener<List<Doodle>> mListener;
     Context mContext;
     private int mMemNo;
 
 
-    public TimeLineRequest(Context context, Response.Listener<List<TimeLine>> listener, Response.ErrorListener errorListener) {
+    public SynchRequest(Context context, Response.Listener<List<Doodle>> listener, Response.ErrorListener errorListener) {
         super(context, Urls.SERVER_URL, errorListener);
         mContext = context;
         mListener = listener;
@@ -38,7 +38,7 @@ public class TimeLineRequest extends BaseRequest{
     protected Map<String, String> getParams() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
         params.put("q","30");
-        params.put("memno", Integer.toString(mMemNo));
+        params.put("memno", "2");
         return params;
     }
 
@@ -48,9 +48,9 @@ public class TimeLineRequest extends BaseRequest{
 
     @Override
     protected void deliverResponse(JSONObject response) {
-        List<TimeLine> list = new ArrayList<TimeLine>();
+        List<Doodle> list = new ArrayList<Doodle>();
 
-        Type listType = new TypeToken<ArrayList<TimeLine>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Doodle>>(){}.getType();
         try {
             list = new Gson().fromJson(response.getString("data"), listType);
         } catch (JSONException e) {
