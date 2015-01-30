@@ -30,7 +30,7 @@ public class LoginActivity extends Activity {
     @InjectView(R.id.login_facebook_btn)
     LoginButton mLoginButton;
 
-    String regId;
+    String regId = "qwerty";
     Context mcontext;
 
     @Override
@@ -122,11 +122,6 @@ public class LoginActivity extends Activity {
                                 session.closeAndClearTokenInformation();
                             }
                         };
-
-
-
-
-
 
                         LoginRequest loginRequest = new LoginRequest(LoginActivity.this, listener, errorListener);
                         loginRequest.setParameter(user.getId(), user.getName(), user.getLink(), regId);

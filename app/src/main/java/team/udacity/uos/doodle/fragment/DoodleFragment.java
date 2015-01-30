@@ -1,6 +1,8 @@
 package team.udacity.uos.doodle.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,8 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -30,6 +30,7 @@ import team.udacity.uos.doodle.activity.DetailViewActivity;
 import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.DoodleUploadRequest;
+import team.udacity.uos.doodle.util.Constants;
 import team.udacity.uos.doodle.util.DBHelper;
 
 /**
@@ -64,9 +65,10 @@ public class DoodleFragment extends Fragment {
         mButtonDoodleUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Doodle mDoodle = new Doodle();
+                SharedPreferences prefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                mDoodle.setDooMemNo(1);  // 임시
+                Doodle mDoodle = new Doodle();
+                mDoodle.setDooMemNo(prefs.getInt(Constants.USER_NO, -1));  // 임시
                 mDoodle.setDooLoca(String.valueOf(mEditTextLocation.getText()));
                 mDoodle.setDooCon(String.valueOf(mEditTextContext.getText()));
                 mDoodle.setDooLat(37.570267);    // 임시
@@ -102,6 +104,7 @@ public class DoodleFragment extends Fragment {
                                 protected void onPostExecute(List<Doodle> doodles) {
                                     // 여기서 하고싶은거 하면 됨
                                     Log.i("Help222","Database size : " + doodles.size());
+                                    Log.i("MyTag","Database size : " + doodles.size());
                                 }
                             }.execute();
 
@@ -120,7 +123,7 @@ public class DoodleFragment extends Fragment {
                 };
 
                 DoodleUploadRequest doodleRequest = new DoodleUploadRequest(getActivity(), listener, errorListener);
-                doodleRequest.setParameter(mDoodle);
+                doodleRequest.setParameter(mDoodle, "empty", "empty");      // 임시
                 VolleyHelper.getRequestQueue().add(doodleRequest);
             }
         });

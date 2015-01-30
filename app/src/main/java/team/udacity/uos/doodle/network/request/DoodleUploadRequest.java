@@ -27,6 +27,8 @@ public class DoodleUploadRequest extends BaseRequest {
     Context mContext;
 
     private Doodle mDoodle;
+    private String mfileUpload;
+    private String mtagFriend;
 
     public DoodleUploadRequest(Context context, Response.Listener<Doodle> listener, Response.ErrorListener errorListener) {
         super(context, Urls.SERVER_URL, errorListener);
@@ -43,14 +45,18 @@ public class DoodleUploadRequest extends BaseRequest {
         params.put("con", String.valueOf(mDoodle.getDooCon()));
         params.put("lat", String.valueOf(mDoodle.getDooLat()));
         params.put("long", String.valueOf(mDoodle.getDooLong()));
-        params.put("file", String.valueOf("empty"));  // 임시
-        params.put("tag", String.valueOf("empty"));   // 임시
+        params.put("file", String.valueOf(mfileUpload));
+        params.put("tag", String.valueOf(mtagFriend));
+
+        // 파일과 친구 태그 있을 경우 추가해줘야함
 
         return params;
     }
 
-    public void setParameter(Doodle doodle) {
+    public void setParameter(Doodle doodle, String fileUpload, String tagFriend) {
         mDoodle = doodle;
+        mfileUpload = fileUpload;
+        mtagFriend = tagFriend;
     }
 
     @Override
