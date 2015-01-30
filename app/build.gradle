@@ -31,4 +31,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.5.0'
     compile files('libs/gcm.jar')
     compile files('libs/gcm-server.jar')
+    compile files('libs/cardboard.jar')
+    compile files('libs/libprotobuf-java-2.3-nano.jar')
 }

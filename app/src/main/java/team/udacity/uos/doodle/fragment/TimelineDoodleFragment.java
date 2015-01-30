@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
+import team.udacity.uos.doodle.activity.CameraProjectActivity;
 import team.udacity.uos.doodle.activity.MapActivity;
 import team.udacity.uos.doodle.adapter.TimeLineAdapter;
 import team.udacity.uos.doodle.model.TimeLine;
@@ -41,6 +42,8 @@ public class TimelineDoodleFragment extends Fragment {
     Button mButtonMap;
     @InjectView(R.id.button_map2)
     Button mButtonMap2;
+    @InjectView(R.id.button_camera)
+    Button mButtonCamera;
 
     TimeLineAdapter mAdapter;
 
@@ -103,6 +106,13 @@ public class TimelineDoodleFragment extends Fragment {
                 mapIntent.putExtra("lat",37.58342);
                 mapIntent.putExtra("long",127.054958);
                 startActivity(mapIntent);
+            }
+        });
+        mButtonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntend = new Intent(getActivity(), CameraProjectActivity.class);
+                startActivity(cameraIntend);
             }
         });
     }
