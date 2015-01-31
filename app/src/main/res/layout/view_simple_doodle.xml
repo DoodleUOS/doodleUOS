@@ -2,18 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#AAAAAA">
 
     <TextView
         android:id="@+id/simple_doodle_loca"
         android:layout_width="match_parent"
-        android:textColor="#ff7777"
+        android:textColor="#ff4444"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/simple_doodle_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>

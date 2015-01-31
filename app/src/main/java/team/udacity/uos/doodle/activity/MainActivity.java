@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import team.udacity.uos.doodle.R;
@@ -18,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     private int NUM_PAGES = 3;		// 최대 페이지의 수
+    Toolbar toolbar;
 
     /* Fragment numbering */
     public final static int FRAGMENT_PAGE1 = 0;
@@ -26,12 +28,13 @@ public class MainActivity extends ActionBarActivity {
 
     ViewPager mViewPager;			// View pager를 지칭할 변수
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // ViewPager를 검색하고 Adapter를 달아주고, 첫 페이지를 선정해준다.
         mViewPager = (ViewPager) findViewById(R.id.pager);

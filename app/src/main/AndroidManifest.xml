@@ -65,7 +65,7 @@
             android:label="@string/map_app_name" >
         </activity>
         <activity
-            android:name=".activity.CameraProjectActivity"
+            android:name=".activity.AugmentedRealityActivity"
             android:label="@string/map_app_name" >
         </activity>
 

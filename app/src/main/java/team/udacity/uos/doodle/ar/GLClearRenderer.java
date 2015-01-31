@@ -41,9 +41,11 @@ public class GLClearRenderer implements Renderer {
     private ByteBuffer mIndexBuffer;
 
     private int MVPhandler;
-    private int mTextureDataHandle;
+    private int mTextureDataHandle[] = new int[4];
     private int mTextureUniformHandle;
     private int mTextureCoordinateHandle;
+
+    public Bitmap mDoodleBitmap[] = new Bitmap[4];
 
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
@@ -272,6 +274,33 @@ public class GLClearRenderer implements Renderer {
         return textureHandle[0];
     }
 
+    public static int loadTexture(final Bitmap bitmap) {
+        final int[] textureHandle = new int[1];
+
+        GLES20.glGenTextures(1, textureHandle, 0);
+
+        if (textureHandle[0] != 0) {
+            // Bind to the texture in OpenGL
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+
+            // Set filtering
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+            // Load the bitmap into the bound texture.
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+
+            // Recycle the bitmap, since its data has been loaded into OpenGL.
+            bitmap.recycle();
+        }
+
+        if (textureHandle[0] == 0) {
+            throw new RuntimeException("Error loading texture.");
+        }
+
+        return textureHandle[0];
+    }
+
     public GLClearRenderer() {
         ByteBuffer byteBuf = ByteBuffer.allocateDirect(cubePositionData.length * 4);
         byteBuf.order(ByteOrder.nativeOrder());
@@ -320,28 +349,44 @@ public class GLClearRenderer implements Renderer {
         Matrix.setLookAtM(mCamera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
         Matrix.multiplyMM(mViewMatrix, 0, mHeadView, 0, mCamera, 0);
 
-        Matrix.translateM(mModelMatrix, 0, -10.0f, 0, 0);
-        Matrix.rotateM(mModelMatrix, 0, mAngle, 0.f, 1.f, 0.f);
 
-        Matrix.multiplyMM(tempMatrix, 0, mProjMatrix, 0, mViewMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, tempMatrix, 0, mModelMatrix, 0);
+        for( int i = 0 ; i < 4 ; i++ ) {
 
-        GLES20.glUniformMatrix4fv(MVPhandler, 1, false, mMVPMatrix, 0);
+            Matrix.setIdentityM(mModelMatrix, 0);
 
-        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramObject, "uText");
-        mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramObject, "aTexCoord");
+            if ( i == 0 ) {
+                Matrix.translateM(mModelMatrix, 0, 7.0f, 0, 0);
+            } else if ( i == 1 ) {
+                Matrix.translateM(mModelMatrix, 0, -7.0f, 0, 0);
+            } else if ( i == 2 ) {
+                Matrix.translateM(mModelMatrix, 0, 0, 0, 7.0f);
+            } else if ( i == 3 ) {
+                Matrix.translateM(mModelMatrix, 0, 0, 0, -7.0f);
+            }
 
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            //Matrix.translateM(mModelMatrix, 0, 5.0f*(float)(i-1), 0, 5.0f*(float)i);
+            Matrix.rotateM(mModelMatrix, 0, mAngle, 0.f, 1.f, 0.f);
 
-        // Bind the texture to this unit.
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle);
+            Matrix.multiplyMM(tempMatrix, 0, mProjMatrix, 0, mViewMatrix, 0);
+            Matrix.multiplyMM(mMVPMatrix, 0, tempMatrix, 0, mModelMatrix, 0);
 
-        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
-        GLES20.glUniform1i(mProgramObject, 0);
+            GLES20.glUniformMatrix4fv(MVPhandler, 1, false, mMVPMatrix, 0);
 
-        //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 36, GLES20.GL_UNSIGNED_BYTE, mIndexBuffer);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
+            mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramObject, "uText");
+            mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramObject, "aTexCoord");
+
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+
+            // Bind the texture to this unit.
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle[i]);
+
+            // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
+            GLES20.glUniform1i(mProgramObject, 0);
+
+            //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 36, GLES20.GL_UNSIGNED_BYTE, mIndexBuffer);
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
+        }
 
         mAngle += 0.5f;
     }
@@ -372,7 +417,10 @@ public class GLClearRenderer implements Renderer {
 
         GLES20.glVertexAttribPointer(0, 3, GLES20.GL_FLOAT, false, 0, mVertexBuffer);
         GLES20.glVertexAttribPointer(1, 2, GLES20.GL_FLOAT, false, 0, mCubeTexCoord);
-        mTextureDataHandle = loadTexture(arProj, R.drawable.ic_launcher);
+
+        for (int i = 0 ; i < 4 ; i++ ) {
+            mTextureDataHandle[i] = loadTexture(mDoodleBitmap[i]);
+        }
 
         GLES20.glEnableVertexAttribArray(0);
         GLES20.glEnableVertexAttribArray(1);
