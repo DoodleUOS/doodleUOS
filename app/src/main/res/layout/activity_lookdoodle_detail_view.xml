@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:weightSum="8"
+    tools:context="team.udacity.uos.doodle.activity.DetailViewActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxWidth="250dp"
+        android:maxHeight="250dp"
+        android:id="@+id/imageViewDetailContext"
+        android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="장소"
+        android:id="@+id/textViewDetailLocation"
+        android:layout_weight="0.45" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.62"
+        android:weightSum="7">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:id="@+id/imageViewDetailAuth"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="43dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="작성자"
+            android:id="@+id/textViewDetailAuth"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="시간"
+            android:id="@+id/textViewDetailDate"
+            android:layout_weight="1"
+            android:padding="3dp"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="내용"
+        android:id="@+id/textViewDetailContext"
+        android:layout_weight="6.85" />
+
+    <ImageButton
+        android:id="@+id/go_lookdoodle_list"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_view_as_list"
+        android:layout_gravity="right" />
+
+</LinearLayout>
