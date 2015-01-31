@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.widget.ProfilePictureView;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -42,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 import team.udacity.uos.doodle.activity.DetailViewActivity;
+import team.udacity.uos.doodle.activity.MemberActivity;
 import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.DoodleUploadRequest;
@@ -66,6 +68,8 @@ public class DoodleFragment extends Fragment {
     ImageButton mTagUser;
     @InjectView(R.id.imageView)
     ImageView mImageView;
+    @InjectView(R.id.tag_user_image)
+    ProfilePictureView mUserImage;
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_TAG_FRIEND = 2;
@@ -106,9 +110,8 @@ public class DoodleFragment extends Fragment {
         mTagUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 액티비티 이름 넣으면 완성
-//                Intent i = new Intent(getActivity(), xxx.class);
-//                startActivityForResult(i, RESULT_TAG_FRIEND);
+                Intent i = new Intent(getActivity(), MemberActivity.class);
+                startActivityForResult(i, RESULT_TAG_FRIEND);
             }
         });
 
@@ -197,16 +200,14 @@ public class DoodleFragment extends Fragment {
                 if(mImagePath.length() == 0){       // 이미지 X
                     if(mTagNo == 0){    // 친구 태그 X
                         doodleRequest.setParameter(mDoodle, "empty", "empty");
-                    }
-                    else{       // 친구 태그 O
+                    } else {       // 친구 태그 O
                         doodleRequest.setParameter(mDoodle, "empty", "tag", mTagNo);
                     }
                 }
                 else{       // 이미지 O
                     if(mTagNo == 0){    // 친구 태그 X
                         doodleRequest.setParameter(mDoodle, "image", "empty", imageToString(mImagePath));
-                    }
-                    else{       // 친구 태그 O
+                    } else {       // 친구 태그 O
                         doodleRequest.setParameter(mDoodle, "image", "tag", imageToString(mImagePath), mTagNo);
                     }
                 }
@@ -223,11 +224,11 @@ public class DoodleFragment extends Fragment {
 
         // 친구 태그
         if(requestCode == RESULT_TAG_FRIEND){
-            // 태그할 친구의 회원번호 등 이것저것 저장
-            // 임시임시
-//          mTagNo = Integer.parseInt(data);
-//          mTagFbNo = data.getDataString();
-//          mTagName = XXXX;
+            mTagNo = data.getIntExtra(Constants.MEMBER_NO, 0);
+            mTagFbNo = data.getStringExtra(Constants.MEMBER_FB_ID);
+            mTagName = data.getStringExtra(Constants.MEMBER_NAME);
+            mUserImage.setVisibility(View.VISIBLE);
+            mUserImage.setProfileId(mTagFbNo);
         }
         // 그림 불러오기
         else if(requestCode == RESULT_LOAD_IMAGE){

@@ -35,11 +35,12 @@ public class MainActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_launcher);
 
         // ViewPager를 검색하고 Adapter를 달아주고, 첫 페이지를 선정해준다.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
-        mViewPager.setCurrentItem(FRAGMENT_PAGE1);
+        mViewPager.setCurrentItem(FRAGMENT_PAGE2);
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

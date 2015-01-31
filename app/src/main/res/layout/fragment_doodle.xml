@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:id="@+id/editTextLocation"
+        android:layout_margin="5dp"
         android:hint="장소"/>
 
     <RelativeLayout
@@ -23,6 +24,7 @@
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             android:gravity="top"
+            android:layout_margin="5dp"
             android:id="@+id/editTextContext"
             android:hint="낙서"/>
 
@@ -30,8 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
+            android:paddingBottom="20dp"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="20dp">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -65,6 +69,15 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/load_picture"
             android:layout_toEndOf="@+id/load_picture" />
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/tag_user_image"
+            android:layout_toRightOf="@id/tag_user"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginLeft="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
 
 
         <ImageButton

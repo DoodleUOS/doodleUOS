@@ -65,9 +65,6 @@ public class AugmentedRealityActivity extends Activity {
             @Override
             protected List<Doodle> doInBackground(Void... params) {
                 List<Doodle> result = Util.getDoodles(AugmentedRealityActivity.this);
-                for(Doodle item : result){
-                    Log.i("Help", "item : " + item.getDooLoca());
-                }
                 return result;
             }
 

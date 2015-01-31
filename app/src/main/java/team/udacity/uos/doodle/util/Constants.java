@@ -10,6 +10,9 @@ public class Constants {
     public static final String USER_FB_NAME = "USER_FB_NAME";
     public static final String USER_FB_LINK = "USER_FB_LINK";
 
+    public static final String MEMBER_NO = "MEMBER_NO";
+    public static final String MEMBER_NAME = "MEMBER_NAME";
+    public static final String MEMBER_FB_ID = "MEMBER_FB_ID";
 
     public final static int VOLLEY_TIMEOUT = 3000;
 

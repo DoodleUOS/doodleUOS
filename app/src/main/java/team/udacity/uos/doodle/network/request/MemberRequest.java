@@ -37,7 +37,7 @@ public class MemberRequest extends BaseRequest{
     protected Map<String, String> getParams() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
         params.put("q","12");
-        params.put("memno", String.valueOf(mMemNo));
+        params.put("memno", Integer.toString(mMemNo));
 
         return params;
     }

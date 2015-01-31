@@ -69,7 +69,7 @@
             android:label="@string/map_app_name" >
         </activity>
 
-        <service android:name=".GpsInfo" />
+        <service android:name=".util.GpsInfo" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -90,6 +90,10 @@
             android:label="@string/title_activity_detail_view" >
         </activity>
 
+        <activity
+            android:name=".activity.MemberActivity"
+            android:label="@string/title_activity_member_view" >
+        </activity>
 
 
 

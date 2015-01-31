@@ -9,5 +9,6 @@
     <string name="map_app_name">MapActivity</string>
     <string name="facebook_login_text">Facebook으로 로그인</string>
     <string name="title_activity_detail_view">메모 보기</string>
+    <string name="title_activity_member_view">친구 태그</string>
 
 </resources>
