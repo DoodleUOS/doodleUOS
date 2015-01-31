@@ -2,7 +2,6 @@ package team.udacity.uos.doodle.ar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLUtils;
@@ -36,16 +35,14 @@ public class GLClearRenderer implements Renderer {
     public float[] mHeadView = new float[16];
 
     private FloatBuffer mVertexBuffer;
-    private FloatBuffer mColorBuffer;
     private FloatBuffer mCubeTexCoord;
-    private ByteBuffer mIndexBuffer;
 
     private int MVPhandler;
-    private int mTextureDataHandle[] = new int[4];
+    private int[] mTextureDataHandle = new int[4];
     private int mTextureUniformHandle;
     private int mTextureCoordinateHandle;
 
-    public Bitmap mDoodleBitmap[] = new Bitmap[4];
+    public Bitmap[] mDoodleBitmap = new Bitmap[4];
 
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
@@ -55,17 +52,6 @@ public class GLClearRenderer implements Renderer {
     private float[] tempMatrix = new float[16];
 
     private float mAngle;
-
-    private float vertices[] = {
-            -1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f
-    };
 
     private float cubePositionData[] = {
             // In OpenGL counter-clockwise winding is default. This means that when we look at a triangle,
@@ -122,17 +108,6 @@ public class GLClearRenderer implements Renderer {
             -1.0f, -1.0f, -1.0f,
     };
 
-    private float colors[] = {
-            0.0f, 1.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 0.5f, 0.0f, 1.0f,
-            1.0f, 0.5f, 0.0f, 1.0f,
-            1.0f, 0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 1.0f
-    };
-
     private float cubeTextureCoordinateData[] = {
             // Front face
             0.0f, 0.0f,
@@ -181,15 +156,6 @@ public class GLClearRenderer implements Renderer {
             0.0f, 1.0f,
             1.0f, 1.0f,
             1.0f, 0.0f
-    };
-
-    private byte indices[] = {
-            0, 4, 5, 0, 5, 1,
-            1, 5, 6, 1, 6, 2,
-            2, 6, 7, 2, 7, 3,
-            3, 7, 4, 3, 4, 0,
-            4, 7, 6, 4, 6, 5,
-            3, 0, 1, 3, 1, 2
     };
 
     private int loadGLShader(Context context, int type, int resId) {
@@ -241,39 +207,6 @@ public class GLClearRenderer implements Renderer {
         }
     }
 
-    public static int loadTexture(final Context context, final int resourceId) {
-        final int[] textureHandle = new int[1];
-
-        GLES20.glGenTextures(1, textureHandle, 0);
-
-        if (textureHandle[0] != 0) {
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;   // No pre-scaling
-
-            // Read in the resource
-            final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
-
-            // Bind to the texture in OpenGL
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
-
-            // Set filtering
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
-
-            // Load the bitmap into the bound texture.
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
-
-            // Recycle the bitmap, since its data has been loaded into OpenGL.
-            bitmap.recycle();
-        }
-
-        if (textureHandle[0] == 0) {
-            throw new RuntimeException("Error loading texture.");
-        }
-
-        return textureHandle[0];
-    }
-
     public static int loadTexture(final Bitmap bitmap) {
         final int[] textureHandle = new int[1];
 
@@ -308,24 +241,11 @@ public class GLClearRenderer implements Renderer {
         mVertexBuffer.put(cubePositionData);
         mVertexBuffer.position(0);
 
-        /*
-        byteBuf = ByteBuffer.allocateDirect(colors.length * 4);
-        byteBuf.order(ByteOrder.nativeOrder());
-        mColorBuffer = byteBuf.asFloatBuffer();
-        mColorBuffer.put(colors);
-        mColorBuffer.position(0);
-        */
-
         byteBuf = ByteBuffer.allocateDirect(cubeTextureCoordinateData.length * 4);
         byteBuf.order(ByteOrder.nativeOrder());
         mCubeTexCoord = byteBuf.asFloatBuffer();
         mCubeTexCoord.put(cubeTextureCoordinateData);
         mCubeTexCoord.position(0);
-
-        mIndexBuffer = ByteBuffer.allocateDirect(indices.length);
-        mIndexBuffer.put(indices);
-        mIndexBuffer.position(0);
-
     }
 
     public void setHeadTracker(HeadTracker headTracker) {
