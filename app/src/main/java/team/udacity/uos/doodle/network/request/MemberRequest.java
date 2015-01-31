@@ -25,6 +25,7 @@ import team.udacity.uos.doodle.network.Urls;
 public class MemberRequest extends BaseRequest{
     Response.Listener<List<Member>> mListener;
     Context mContext;
+    private int mMemNo;
 
     public MemberRequest(Context context, Response.Listener<List<Member>> listener, Response.ErrorListener errorListener) {
         super(context, Urls.SERVER_URL, errorListener);
@@ -36,12 +37,13 @@ public class MemberRequest extends BaseRequest{
     protected Map<String, String> getParams() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
         params.put("q","12");
+        params.put("memno", String.valueOf(mMemNo));
 
         return params;
     }
 
-    public void setParameter() {
-
+    public void setParameter(int memNo) {
+        mMemNo = memNo;
     }
 
     @Override

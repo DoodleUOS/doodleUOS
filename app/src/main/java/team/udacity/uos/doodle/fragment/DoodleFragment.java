@@ -72,6 +72,7 @@ public class DoodleFragment extends Fragment {
     private String mImagePath = "";
     private int mTagNo = 0;
     private String mTagFbNo = "";
+    private String mTagName = "";
 
     private GpsInfo gps;
     private double latitude = 0;
@@ -222,11 +223,11 @@ public class DoodleFragment extends Fragment {
 
         // 친구 태그
         if(requestCode == RESULT_TAG_FRIEND){
-            // 태그할 친구의 회원번호를 저장
-            // 태그할 친구의 페북 프로필을 띄어주셈
+            // 태그할 친구의 회원번호 등 이것저것 저장
             // 임시임시
 //          mTagNo = Integer.parseInt(data);
 //          mTagFbNo = data.getDataString();
+//          mTagName = XXXX;
         }
         // 그림 불러오기
         else if(requestCode == RESULT_LOAD_IMAGE){
