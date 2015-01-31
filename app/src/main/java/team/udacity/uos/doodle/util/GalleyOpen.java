@@ -10,7 +10,7 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import team.udacity.uos.doodle.R;
@@ -19,20 +19,20 @@ import team.udacity.uos.doodle.R;
 public class GalleyOpen extends Activity {
 
     private static int RESULT_LOAD_IMAGE = 1;
-    Button mImageButton;
+    ImageButton mImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_doodle);
 
-        mImageButton = (Button) findViewById(R.id.load_picture);
+        mImageButton = (ImageButton) findViewById(R.id.load_picture);
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
@@ -67,7 +67,7 @@ public class GalleyOpen extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_galley, menu);
         return true;
     }
 

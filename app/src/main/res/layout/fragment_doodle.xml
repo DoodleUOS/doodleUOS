@@ -26,23 +26,23 @@
             android:id="@+id/editTextContext"
             android:hint="낙서"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="20dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:maxWidth="100dp"
-                android:maxHeight="100dp"
-                android:gravity="bottom" />
-        </FrameLayout>
-
     </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:gravity="bottom" />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

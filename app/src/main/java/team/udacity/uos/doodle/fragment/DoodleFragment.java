@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 import team.udacity.uos.doodle.activity.DetailViewActivity;
+import team.udacity.uos.doodle.activity.MemberActivity;
 import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.DoodleUploadRequest;
@@ -106,9 +107,8 @@ public class DoodleFragment extends Fragment {
         mTagUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 액티비티 이름 넣으면 완성
-//                Intent i = new Intent(getActivity(), xxx.class);
-//                startActivityForResult(i, RESULT_TAG_FRIEND);
+                Intent i = new Intent(getActivity(), MemberActivity.class);
+                startActivityForResult(i, RESULT_TAG_FRIEND);
             }
         });
 
@@ -197,16 +197,14 @@ public class DoodleFragment extends Fragment {
                 if(mImagePath.length() == 0){       // 이미지 X
                     if(mTagNo == 0){    // 친구 태그 X
                         doodleRequest.setParameter(mDoodle, "empty", "empty");
-                    }
-                    else{       // 친구 태그 O
+                    } else {       // 친구 태그 O
                         doodleRequest.setParameter(mDoodle, "empty", "tag", mTagNo);
                     }
                 }
                 else{       // 이미지 O
                     if(mTagNo == 0){    // 친구 태그 X
                         doodleRequest.setParameter(mDoodle, "image", "empty", imageToString(mImagePath));
-                    }
-                    else{       // 친구 태그 O
+                    } else {       // 친구 태그 O
                         doodleRequest.setParameter(mDoodle, "image", "tag", imageToString(mImagePath), mTagNo);
                     }
                 }
@@ -223,11 +221,9 @@ public class DoodleFragment extends Fragment {
 
         // 친구 태그
         if(requestCode == RESULT_TAG_FRIEND){
-            // 태그할 친구의 회원번호 등 이것저것 저장
-            // 임시임시
-//          mTagNo = Integer.parseInt(data);
-//          mTagFbNo = data.getDataString();
-//          mTagName = XXXX;
+          mTagNo = data.getIntExtra(Constants.MEMBER_NO, 0);
+          mTagFbNo = data.getStringExtra(Constants.MEMBER_FB_ID);
+          mTagName = data.getStringExtra(Constants.MEMBER_NAME);
         }
         // 그림 불러오기
         else if(requestCode == RESULT_LOAD_IMAGE){
