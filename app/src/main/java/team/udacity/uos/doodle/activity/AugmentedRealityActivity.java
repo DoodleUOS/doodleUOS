@@ -73,14 +73,14 @@ public class CameraProjectActivity extends Activity {
                 for (Doodle item : list){
                     if (cnt > 3) break;
                     else {
-                        myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(CameraProjectActivity.this, item));
+                        myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(AugmentedRealityActivity.this, item));
                         cnt++;
                     }
                 }
                 setContentView( glView );
 
                 // Now also create a view which contains the camera preview...
-                CameraView cameraView = new CameraView( CameraProjectActivity.this );
+                CameraView cameraView = new CameraView( AugmentedRealityActivity.this );
                 // ...and add it, wrapping the full screen size.
                 addContentView( cameraView, new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT ) );
             }

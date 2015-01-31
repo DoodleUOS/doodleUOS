@@ -60,6 +60,8 @@ public class GpsInfo extends Service implements LocationListener {
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
+
+
                 // GPS 와 네트워크사용이 가능하지 않을때 소스 구현
             } else {
                 this.isGetLocation = true;
