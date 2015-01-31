@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -43,12 +43,9 @@ public class DoodleFragment extends Fragment {
     @InjectView(R.id.editTextContext)
     EditText mEditTextContext;
     @InjectView(R.id.buttonDoodleUpload)
-    Button mButtonDoodleUpload;
+    ImageView mButtonDoodleUpload;
 
-    @InjectView(R.id.editTextDetailView)
-    EditText mEditTextDetailView;
-    @InjectView(R.id.buttonDetailView)
-    Button mButtonDetailView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,26 +133,6 @@ public class DoodleFragment extends Fragment {
                 VolleyHelper.getRequestQueue().add(doodleRequest);
             }
         });
-
-
-        // 임시 테스트용
-        mButtonDetailView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String doodleNoTemp = String.valueOf(mEditTextDetailView.getText());
-                if(doodleNoTemp.equals("")){
-                    Toast.makeText(getActivity(),"숫자를 입력해주세요(임시 테스트용)",Toast.LENGTH_LONG);
-                } else{
-                    int doodleNo = Integer.parseInt(doodleNoTemp);
-
-                    Intent mDetailIntent = new Intent(getActivity(), DetailViewActivity.class);
-                    mDetailIntent.putExtra("doodleNo", doodleNo);
-                    startActivity(mDetailIntent);
-                }
-
-            }
-        });
-
 
         return layout;
     }

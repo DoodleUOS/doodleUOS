@@ -3,18 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="7">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
-
+    android:weightSum="8">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextLocation"
-        android:layout_weight="1"
+        android:layout_weight="0.40"
         android:hint="장소"/>
 
     <EditText
@@ -24,7 +19,7 @@
         android:gravity="top"
         android:id="@+id/editTextContext"
         android:hint="낙서"
-        android:layout_weight="5"/>
+        android:layout_weight="7.6"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,24 +30,17 @@
         android:paddingRight="5dp"
         android:weightSum="1">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
             android:id="@+id/load_picture"
-            android:layout_alignParentBottom = "true"
-            android:text="사진"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom = "true"
-            android:text="친구태그"/>
+            android:src="@drawable/ic_action_photo" />
+        <ImageButton
+            android:id="@+id/tag_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_user_add" />
 
-        <Button
-            android:id="@+id/buttonDoodleUpload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom = "true"
-            android:text="남기기" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -67,27 +55,13 @@
 
 
     </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <ImageButton
+        android:id="@+id/buttonDoodleUpload"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editTextDetailView" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom = "true"
-            android:text="메모보기"
-            android:id="@+id/buttonDetailView" />
-
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_edit"
+        android:layout_gravity="right"
+        android:layout_weight="1" />
 
 </LinearLayout>

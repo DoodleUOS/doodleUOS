@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import team.udacity.uos.doodle.R;
@@ -26,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
     public final static int FRAGMENT_PAGE3 = 2;
 
     ViewPager mViewPager;			// View pager를 지칭할 변수
-    private Toolbar toolbar;
 
 
 
@@ -57,11 +55,7 @@ public class MainActivity extends ActionBarActivity {
 
         });
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
 
     }
 
