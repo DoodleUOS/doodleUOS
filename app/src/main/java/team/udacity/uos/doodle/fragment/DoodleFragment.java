@@ -68,7 +68,10 @@ public class DoodleFragment extends Fragment {
     ImageView mImageView;
 
     private static int RESULT_LOAD_IMAGE = 1;
+    private static int RESULT_TAG_FRIEND = 2;
     private String mImagePath = "";
+    private int mTagNo = 0;
+    private String mTagFbNo = "";
 
     private GpsInfo gps;
     private double latitude = 0;
@@ -102,7 +105,9 @@ public class DoodleFragment extends Fragment {
         mTagUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 액티비티 이름 넣으면 완성
+//                Intent i = new Intent(getActivity(), xxx.class);
+//                startActivityForResult(i, RESULT_TAG_FRIEND);
             }
         });
 
@@ -189,10 +194,20 @@ public class DoodleFragment extends Fragment {
 
                 DoodleUploadRequest doodleRequest = new DoodleUploadRequest(getActivity(), listener, errorListener);
                 if(mImagePath.length() == 0){       // 이미지 X
-                    doodleRequest.setParameter(mDoodle, "empty", "empty");
+                    if(mTagNo == 0){    // 친구 태그 X
+                        doodleRequest.setParameter(mDoodle, "empty", "empty");
+                    }
+                    else{       // 친구 태그 O
+                        doodleRequest.setParameter(mDoodle, "empty", "tag", mTagNo);
+                    }
                 }
                 else{       // 이미지 O
-                    doodleRequest.setParameter(mDoodle, "image", "empty", imageToString(mImagePath));
+                    if(mTagNo == 0){    // 친구 태그 X
+                        doodleRequest.setParameter(mDoodle, "image", "empty", imageToString(mImagePath));
+                    }
+                    else{       // 친구 태그 O
+                        doodleRequest.setParameter(mDoodle, "image", "tag", imageToString(mImagePath), mTagNo);
+                    }
                 }
 
                 VolleyHelper.getRequestQueue().add(doodleRequest);
@@ -205,34 +220,41 @@ public class DoodleFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 8;
-
-            Cursor c = getActivity().getContentResolver().query(Uri.parse(data.getDataString()), null, null, null, null);
-            c.moveToNext();
-            String tempPath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-            Uri uri = Uri.fromFile(new File(tempPath));
-//			Log.e("flag", uri.toString() + "\n" + tempPath);
-            c.close();
-
-            final Bitmap b = BitmapFactory.decodeFile(tempPath, options);
-
-            // temp_img.setImageURI(data.getData());
-
-            //img[0].setImageBitmap(b);
-            //ImgPath[0] = tempPath;
-
-            mImagePath = tempPath;
-            mImageView.setVisibility(View.VISIBLE);
-            mImageView.setImageBitmap(b);
-
-            Toast.makeText(getActivity(), "[" + mImagePath + "]", Toast.LENGTH_SHORT).show();
-//            mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-        } catch (Exception e) {
-
+        // 친구 태그
+        if(requestCode == RESULT_TAG_FRIEND){
+            // 태그할 친구의 회원번호를 저장
+            // 태그할 친구의 페북 프로필을 띄어주셈
+            // 임시임시
+//          mTagNo = Integer.parseInt(data);
+//          mTagFbNo = data.getDataString();
         }
+        // 그림 불러오기
+        else if(requestCode == RESULT_LOAD_IMAGE){
+            try {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+
+                Cursor c = getActivity().getContentResolver().query(Uri.parse(data.getDataString()), null, null, null, null);
+                c.moveToNext();
+                String tempPath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+                Uri uri = Uri.fromFile(new File(tempPath));
+                c.close();
+
+                final Bitmap b = BitmapFactory.decodeFile(tempPath, options);
+
+                // temp_img.setImageURI(data.getData());
+
+                //img[0].setImageBitmap(b);
+                //ImgPath[0] = tempPath;
+
+                mImagePath = tempPath;
+                mImageView.setVisibility(View.VISIBLE);
+                mImageView.setImageBitmap(b);
+            } catch (Exception e) {
+
+            }
+        }
+
     }
 
     // 이미지를 String으로 변환
