@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
-import team.udacity.uos.doodle.activity.CameraProjectActivity;
+import team.udacity.uos.doodle.activity.AugmentedRealityActivity;
 import team.udacity.uos.doodle.activity.MapActivity;
 import team.udacity.uos.doodle.adapter.TimeLineAdapter;
 import team.udacity.uos.doodle.model.TimeLine;
@@ -104,7 +104,7 @@ public class TimelineDoodleFragment extends Fragment {
         mButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(getActivity(), CameraProjectActivity.class);
+                Intent cameraIntent = new Intent(getActivity(), AugmentedRealityActivity.class);
                 startActivity(cameraIntent);
             }
         });
