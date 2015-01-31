@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -23,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,6 +33,7 @@ import team.udacity.uos.doodle.R;
 import team.udacity.uos.doodle.model.Member;
 import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.LoginRequest;
+import team.udacity.uos.doodle.network.request.SyncRequest;
 import team.udacity.uos.doodle.util.Constants;
 
 
@@ -47,9 +49,7 @@ public class LoginActivity extends Activity {
 
     String SENDER_ID = "6764424943751";
     GoogleCloudMessaging gcm;
-    TextView mDisplay;
     AtomicInteger msgId = new AtomicInteger();
-    SharedPreferences prefs;
 
     @InjectView(R.id.login_facebook_btn)
     LoginButton mLoginButton;
@@ -105,98 +105,6 @@ public class LoginActivity extends Activity {
         }
 
     }
-
-    private boolean checkPlayServices(){
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if(resultCode != ConnectionResult.SUCCESS){
-            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
-                GooglePlayServicesUtil.getErrorDialog(resultCode,this,PLAY_SERVICES_RESOLUTION_REQUEST).show();
-
-            } else {
-                Log.i("gcm","this device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private String getRegistrationId(Context context){
-        final SharedPreferences prefs = getGCMPreferences(context);
-        String registrationId = prefs.getString(PROPERTY_REG_ID,"");
-        if(registrationId.isEmpty()){
-            Log.i("gcm","Registration not found");
-            return "";
-        }
-
-
-        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-        int currentVersion = getAppVersion(context);
-        if(registeredVersion != currentVersion){
-            Log.i("gcm","Appp version changed.");
-            return "";
-        }
-        return registrationId;
-    }
-
-    private SharedPreferences getGCMPreferences(Context context){
-        return getSharedPreferences(LoginActivity.class.getSimpleName(),Context.MODE_PRIVATE);
-    }
-
-    private static int getAppVersion(Context context){
-        try{
-            PackageInfo packageInfo = context.getPackageManager().
-                    getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch(PackageManager.NameNotFoundException e){
-            throw new RuntimeException("Could not get package name : " + e);
-        }
-    }
-    /*
-    public void registerInBackground(){
-        new AsyncTask(){
-
-
-            @Override
-            protected void onPostExecute(String msg){
-                mDisplay.append(msg+"\n");
-            }
-
-            @Override
-            protected String doInBackground(Object[] params) {
-                String msg = "";
-                try {
-                    if(gcm == null){
-                        gcm = GoogleCloudMessaging.getInstance(mcontext);
-                    }
-                    regId = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID = " + regId;
-                    sendRegistrationIdToBackend();
-                    storeRegistratinoId(mcontext, regId);
-                } catch (IOException ex){
-                    msg = "Error :" + ex.getMessage();
-                }
-                return msg;
-            }
-        }.execute(null, null, null);
-    }
-    */
-    private void sendRegistrationIdToBackend(){
-
-    }
-
-
-    private void storeRegistrationId(Context context, String regId){
-        final SharedPreferences prefs = getGCMPreferences(context);
-        int appVersion = getAppVersion(context);
-        Log.i("gcm","Saving regId on app version " + appVersion);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, regId);
-        editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.commit();
-    }
-
-
 
     public void onResume() {
         super.onResume();
@@ -254,9 +162,8 @@ public class LoginActivity extends Activity {
                                 prefEditor.putString(Constants.USER_FB_LINK, response.getMemFbUrl());
                                 prefEditor.apply();
 
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                syncDoodle(response.getMemNo());
+
                             }
                         };
 
@@ -281,12 +188,130 @@ public class LoginActivity extends Activity {
         request.executeAsync();
     }
 
+    private void syncDoodle(int memNo){
+
+        com.android.volley.Response.Listener<JSONObject> listener = new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+
+        com.android.volley.Response.ErrorListener errorListener = new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+
+        SyncRequest syncRequest = new SyncRequest(LoginActivity.this, listener, errorListener);
+        syncRequest.setParameter(memNo);
+        VolleyHelper.getRequestQueue().add(syncRequest);
+    }
+
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
             onSessionStateChange(session, state, exception);
         }
     };
+
+    private boolean checkPlayServices(){
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if(resultCode != ConnectionResult.SUCCESS){
+            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
+                GooglePlayServicesUtil.getErrorDialog(resultCode,this,PLAY_SERVICES_RESOLUTION_REQUEST).show();
+
+            } else {
+                Log.i("gcm","this device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private String getRegistrationId(Context context){
+        final SharedPreferences prefs = getGCMPreferences(context);
+        String registrationId = prefs.getString(PROPERTY_REG_ID,"");
+        if(registrationId.isEmpty()){
+            Log.i("gcm","Registration not found");
+            return "";
+        }
+
+
+        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        if(registeredVersion != currentVersion){
+            Log.i("gcm","Appp version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    private SharedPreferences getGCMPreferences(Context context){
+        return getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    private static int getAppVersion(Context context){
+        try{
+            PackageInfo packageInfo = context.getPackageManager().
+                    getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch(PackageManager.NameNotFoundException e){
+            throw new RuntimeException("Could not get package name : " + e);
+        }
+    }
+    /*
+    public void registerInBackground(){
+        new AsyncTask(){
+
+
+            @Override
+            protected void onPostExecute(String msg){
+                mDisplay.append(msg+"\n");
+            }
+
+            @Override
+            protected String doInBackground(Object[] params) {
+                String msg = "";
+                try {
+                    if(gcm == null){
+                        gcm = GoogleCloudMessaging.getInstance(mcontext);
+                    }
+                    regId = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration ID = " + regId;
+                    sendRegistrationIdToBackend();
+                    storeRegistratinoId(mcontext, regId);
+                } catch (IOException ex){
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
+            }
+        }.execute(null, null, null);
+    }
+    */
+    private void sendRegistrationIdToBackend(){
+
+    }
+
+
+    private void storeRegistrationId(Context context, String regId){
+        final SharedPreferences prefs = getGCMPreferences(context);
+        int appVersion = getAppVersion(context);
+        Log.i("gcm","Saving regId on app version " + appVersion);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PROPERTY_REG_ID, regId);
+        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+        editor.commit();
+    }
+
+
+
 /*
     private void registerDevice() {
 
