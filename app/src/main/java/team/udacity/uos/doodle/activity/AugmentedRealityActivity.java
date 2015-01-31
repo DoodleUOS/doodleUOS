@@ -23,7 +23,7 @@ import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.util.Util;
 import team.udacity.uos.doodle.view.SimpleDoodleView;
 
-public class CameraProjectActivity extends Activity {
+public class AugmentedRealityActivity extends Activity {
 
     GLClearRenderer myRenderer = new GLClearRenderer();
     private HeadTracker mHeadTracker;
@@ -64,7 +64,7 @@ public class CameraProjectActivity extends Activity {
 
             @Override
             protected List<Doodle> doInBackground(Void... params) {
-                List<Doodle> result = Util.getDoodles(CameraProjectActivity.this);
+                List<Doodle> result = Util.getDoodles(AugmentedRealityActivity.this);
                 return result;
             }
 
