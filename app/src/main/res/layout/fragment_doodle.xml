@@ -3,32 +3,51 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="8">
+    android:weightSum="8"
+    android:background="@drawable/background_doodle_clean">
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:id="@+id/editTextLocation"
-        android:layout_weight="0.40"
         android:hint="장소"/>
 
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:gravity="top"
-        android:id="@+id/editTextContext"
-        android:hint="낙서"
-        android:layout_weight="7.6"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="7.6">
 
-    <LinearLayout
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:id="@+id/editTextContext"
+            android:hint="낙서"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/imageView"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:gravity="bottom"
+            android:baselineAlignBottom="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom = "true"
-        android:layout_weight="1"
+        android:layout_weight="0.34"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:weightSum="1">
+        android:paddingRight="5dp">
 
         <ImageButton
             android:id="@+id/load_picture"
@@ -39,28 +58,22 @@
             android:id="@+id/tag_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_user_add" />
+            android:src="@drawable/ic_action_user_add"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/load_picture"
+            android:layout_toEndOf="@+id/load_picture" />
 
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:adjustViewBounds="true"
-            android:id="@+id/imageView"
-            android:layout_above="@id/load_picture"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:visibility="gone" />
+        <ImageButton
+            android:id="@+id/buttonDoodleUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_edit"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
-    </LinearLayout>
-    <ImageButton
-        android:id="@+id/buttonDoodleUpload"
-        android:layout_marginBottom="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_edit"
-        android:layout_gravity="right"
-        android:layout_weight="1" />
+    </RelativeLayout>
 
 </LinearLayout>
