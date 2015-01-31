@@ -39,7 +39,7 @@ public class TimelineDoodleFragment extends Fragment {
     ListView mListView;
     @InjectView(R.id.button_map)
     Button mButtonMap;
-    @InjectView(R.id.button_map2)
+    @InjectView(R.id.button_camera)
     Button mButtonCamera;
 
     TimeLineAdapter mAdapter;
