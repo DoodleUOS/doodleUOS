@@ -40,7 +40,7 @@ public class DetailViewActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_lookdoodle_noitem);
+        setContentView(R.layout.fragment_lookdoodle_detail_view);
         ButterKnife.inject(this);
 
         Bundle bundle = getIntent().getExtras();
