@@ -38,11 +38,12 @@ public class GLClearRenderer implements Renderer {
     private FloatBuffer mCubeTexCoord;
 
     private int MVPhandler;
-    private int[] mTextureDataHandle = new int[4];
+    private int[] mTextureDataHandle = new int[64];
     private int mTextureUniformHandle;
     private int mTextureCoordinateHandle;
 
-    public Bitmap[] mDoodleBitmap = new Bitmap[4];
+    public Bitmap[] mDoodleBitmap = new Bitmap[64];
+    public int mDoodleCount = 0;
 
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
@@ -269,8 +270,7 @@ public class GLClearRenderer implements Renderer {
         Matrix.setLookAtM(mCamera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
         Matrix.multiplyMM(mViewMatrix, 0, mHeadView, 0, mCamera, 0);
 
-
-        for( int i = 0 ; i < 4 ; i++ ) {
+        for( int i = 0 ; i < mDoodleCount ; i++ ) {
 
             Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -282,7 +282,7 @@ public class GLClearRenderer implements Renderer {
                 Matrix.translateM(mModelMatrix, 0, 0, 0, 7.0f);
             } else if ( i == 3 ) {
                 Matrix.translateM(mModelMatrix, 0, 0, 0, -7.0f);
-            }
+            } else if ( i == 4 ) break;
 
             //Matrix.translateM(mModelMatrix, 0, 5.0f*(float)(i-1), 0, 5.0f*(float)i);
             Matrix.rotateM(mModelMatrix, 0, mAngle, 0.f, 1.f, 0.f);
@@ -338,7 +338,7 @@ public class GLClearRenderer implements Renderer {
         GLES20.glVertexAttribPointer(0, 3, GLES20.GL_FLOAT, false, 0, mVertexBuffer);
         GLES20.glVertexAttribPointer(1, 2, GLES20.GL_FLOAT, false, 0, mCubeTexCoord);
 
-        for (int i = 0 ; i < 4 ; i++ ) {
+        for (int i = 0 ; i < mDoodleCount ; i++ ) {
             mTextureDataHandle[i] = loadTexture(mDoodleBitmap[i]);
         }
 

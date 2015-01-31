@@ -74,6 +74,7 @@ public class TimelineDoodleFragment extends Fragment {
                         Intent mapIntent = new Intent(getActivity(), MapActivity.class);
                         mapIntent.putExtra("lat",mAdapter.getItem(position).getDooLat());
                         mapIntent.putExtra("long",mAdapter.getItem(position).getDooLong());
+                        mapIntent.putExtra("value",1);
                         startActivity(mapIntent);
                     }
                 });
@@ -97,6 +98,7 @@ public class TimelineDoodleFragment extends Fragment {
                 Intent mapIntent = new Intent(getActivity(), MapActivity.class);
                 mapIntent.putExtra("lat",0);
                 mapIntent.putExtra("long",0);
+                mapIntent.putExtra("value",0);
                 startActivity(mapIntent);
             }
         });

@@ -20,6 +20,7 @@ import java.util.List;
 import team.udacity.uos.doodle.ar.CameraView;
 import team.udacity.uos.doodle.ar.GLClearRenderer;
 import team.udacity.uos.doodle.model.Doodle;
+import team.udacity.uos.doodle.util.GpsInfo;
 import team.udacity.uos.doodle.util.Util;
 import team.udacity.uos.doodle.view.SimpleDoodleView;
 
@@ -27,6 +28,8 @@ public class AugmentedRealityActivity extends Activity {
 
     GLClearRenderer myRenderer = new GLClearRenderer();
     private HeadTracker mHeadTracker;
+
+
 
     private int cnt = 0;
 
@@ -71,12 +74,41 @@ public class AugmentedRealityActivity extends Activity {
             @Override
             protected void onPostExecute(List<Doodle> list) {
                 for (Doodle item : list){
+
+                    /*
                     if (cnt > 3) break;
                     else {
                         myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(AugmentedRealityActivity.this, item));
                         cnt++;
                     }
+                    */
+                    GpsInfo gps = new GpsInfo(AugmentedRealityActivity.this);
+
+                    if (gps.isGetLocation()) {
+
+                        double latitude = gps.getLatitude();
+                        double longitude = gps.getLongitude();
+                        double distancex = latitude - item.getDooLat();
+                        double distancey = longitude - item.getDooLong();
+
+                        double dis = Math.sqrt((distancex * distancex) + (distancey * distancey)) * 100000;
+
+                        Log.i("GPS", "gps.isGetLocation() Distance = " + dis);
+
+                        if(dis < 1000.0) {
+                            myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(AugmentedRealityActivity.this, item));
+                            Log.i("GPS", "Passed " + item.getMemName());
+                            //몇미터 거리 이내일 경우
+                            cnt++;
+                        }
+
+                    } else {
+                        // GPS 를 사용할수 없으므로
+                        gps.showSettingsAlert();
+                    }
                 }
+
+                myRenderer.mDoodleCount = cnt;
                 setContentView( glView );
 
                 // Now also create a view which contains the camera preview...
