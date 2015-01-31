@@ -1,8 +1,11 @@
 package team.udacity.uos.doodle.ar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
+import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.util.Log;
 
@@ -34,9 +37,13 @@ public class GLClearRenderer implements Renderer {
 
     private FloatBuffer mVertexBuffer;
     private FloatBuffer mColorBuffer;
+    private FloatBuffer mCubeTexCoord;
     private ByteBuffer mIndexBuffer;
 
     private int MVPhandler;
+    private int mTextureDataHandle;
+    private int mTextureUniformHandle;
+    private int mTextureCoordinateHandle;
 
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
@@ -57,6 +64,62 @@ public class GLClearRenderer implements Renderer {
             1.0f, 1.0f, 1.0f,
             -1.0f, 1.0f, 1.0f
     };
+
+    private float cubePositionData[] = {
+            // In OpenGL counter-clockwise winding is default. This means that when we look at a triangle,
+            // if the points are counter-clockwise we are looking at the "front". If not we are looking at
+            // the back. OpenGL has an optimization where all back-facing triangles are culled, since they
+            // usually represent the backside of an object and aren't visible anyways.
+
+            // Front face
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+
+            // Right face
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+
+            // Back face
+            1.0f, 1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+
+            // Left face
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+
+            // Top face
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+
+            // Bottom face
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f,
+    };
+
     private float colors[] = {
             0.0f, 1.0f, 0.0f, 1.0f,
             0.0f, 1.0f, 0.0f, 1.0f,
@@ -66,6 +129,56 @@ public class GLClearRenderer implements Renderer {
             1.0f, 0.0f, 0.0f, 1.0f,
             0.0f, 0.0f, 1.0f, 1.0f,
             1.0f, 0.0f, 1.0f, 1.0f
+    };
+
+    private float cubeTextureCoordinateData[] = {
+            // Front face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            // Right face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            // Back face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            // Left face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            // Top face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            // Bottom face
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f
     };
 
     private byte indices[] = {
@@ -126,18 +239,59 @@ public class GLClearRenderer implements Renderer {
         }
     }
 
+    public static int loadTexture(final Context context, final int resourceId) {
+        final int[] textureHandle = new int[1];
+
+        GLES20.glGenTextures(1, textureHandle, 0);
+
+        if (textureHandle[0] != 0) {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;   // No pre-scaling
+
+            // Read in the resource
+            final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
+
+            // Bind to the texture in OpenGL
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+
+            // Set filtering
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+            // Load the bitmap into the bound texture.
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+
+            // Recycle the bitmap, since its data has been loaded into OpenGL.
+            bitmap.recycle();
+        }
+
+        if (textureHandle[0] == 0) {
+            throw new RuntimeException("Error loading texture.");
+        }
+
+        return textureHandle[0];
+    }
+
     public GLClearRenderer() {
-        ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
+        ByteBuffer byteBuf = ByteBuffer.allocateDirect(cubePositionData.length * 4);
         byteBuf.order(ByteOrder.nativeOrder());
         mVertexBuffer = byteBuf.asFloatBuffer();
-        mVertexBuffer.put(vertices);
+        mVertexBuffer.put(cubePositionData);
         mVertexBuffer.position(0);
 
+        /*
         byteBuf = ByteBuffer.allocateDirect(colors.length * 4);
         byteBuf.order(ByteOrder.nativeOrder());
         mColorBuffer = byteBuf.asFloatBuffer();
         mColorBuffer.put(colors);
         mColorBuffer.position(0);
+        */
+
+        byteBuf = ByteBuffer.allocateDirect(cubeTextureCoordinateData.length * 4);
+        byteBuf.order(ByteOrder.nativeOrder());
+        mCubeTexCoord = byteBuf.asFloatBuffer();
+        mCubeTexCoord.put(cubeTextureCoordinateData);
+        mCubeTexCoord.position(0);
 
         mIndexBuffer = ByteBuffer.allocateDirect(indices.length);
         mIndexBuffer.put(indices);
@@ -148,7 +302,10 @@ public class GLClearRenderer implements Renderer {
     public void setHeadTracker(HeadTracker headTracker) {
         mHeadTracker = headTracker;
     }
-    public void setContext(Context context){ arProj = context; }
+
+    public void setContext(Context context) {
+        arProj = context;
+    }
 
     @Override
     public void onDrawFrame(GL10 gl) {
@@ -163,7 +320,7 @@ public class GLClearRenderer implements Renderer {
         Matrix.setLookAtM(mCamera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
         Matrix.multiplyMM(mViewMatrix, 0, mHeadView, 0, mCamera, 0);
 
-        Matrix.translateM(mModelMatrix, 0, 0, 0, 10.0f);
+        Matrix.translateM(mModelMatrix, 0, -10.0f, 0, 0);
         Matrix.rotateM(mModelMatrix, 0, mAngle, 0.f, 1.f, 0.f);
 
         Matrix.multiplyMM(tempMatrix, 0, mProjMatrix, 0, mViewMatrix, 0);
@@ -171,7 +328,20 @@ public class GLClearRenderer implements Renderer {
 
         GLES20.glUniformMatrix4fv(MVPhandler, 1, false, mMVPMatrix, 0);
 
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, 36, GLES20.GL_UNSIGNED_BYTE, mIndexBuffer);
+        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramObject, "uText");
+        mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramObject, "aTexCoord");
+
+        // Set the active texture unit to texture unit 0.
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+
+        // Bind the texture to this unit.
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle);
+
+        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
+        GLES20.glUniform1i(mProgramObject, 0);
+
+        //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 36, GLES20.GL_UNSIGNED_BYTE, mIndexBuffer);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
 
         mAngle += 0.5f;
     }
@@ -180,7 +350,6 @@ public class GLClearRenderer implements Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-        //GLU.gluPerspective(gl, 45.0f, (float)width / (float)height, 0.1f, 100.0f);
         Matrix.setIdentityM(mProjMatrix, 0);
         Matrix.perspectiveM(mProjMatrix, 0, 45.0f, (float) width / (float) height, 0.1f, 100.0f);
     }
@@ -188,21 +357,22 @@ public class GLClearRenderer implements Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-        int h_vert = loadGLShader(arProj , GLES20.GL_VERTEX_SHADER, R.raw.doodle_vertex);
-        int h_frag = loadGLShader(arProj , GLES20.GL_FRAGMENT_SHADER, R.raw.doodle_fragment);
+        int h_vert = loadGLShader(arProj, GLES20.GL_VERTEX_SHADER, R.raw.doodle_vertex);
+        int h_frag = loadGLShader(arProj, GLES20.GL_FRAGMENT_SHADER, R.raw.doodle_fragment);
 
         int h_prog = GLES20.glCreateProgram();
         GLES20.glAttachShader(h_prog, h_vert);
         GLES20.glAttachShader(h_prog, h_frag);
 
         GLES20.glBindAttribLocation(h_prog, 0, "aPosition");
-        GLES20.glBindAttribLocation(h_prog, 1, "aColor");
+        GLES20.glBindAttribLocation(h_prog, 1, "aTexCoord");
 
         GLES20.glLinkProgram(h_prog);
         GLES20.glUseProgram(h_prog);
 
         GLES20.glVertexAttribPointer(0, 3, GLES20.GL_FLOAT, false, 0, mVertexBuffer);
-        GLES20.glVertexAttribPointer(1, 4, GLES20.GL_FLOAT, false, 0, mColorBuffer);
+        GLES20.glVertexAttribPointer(1, 2, GLES20.GL_FLOAT, false, 0, mCubeTexCoord);
+        mTextureDataHandle = loadTexture(arProj, R.drawable.ic_launcher);
 
         GLES20.glEnableVertexAttribArray(0);
         GLES20.glEnableVertexAttribArray(1);

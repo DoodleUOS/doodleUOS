@@ -1,12 +1,12 @@
 uniform mat4 MVP;
 
 attribute vec3 aPosition;
-attribute vec4 aColor;
+attribute vec2 aTexCoord;
 
-varying vec4 vColor;
+varying vec2 vTexCoord;
 
 void main()
 {
     gl_Position = MVP * vec4(aPosition.x, aPosition.y, aPosition.z, 1.0);
-    vColor = aColor;
+    vTexCoord = aTexCoord;
 }

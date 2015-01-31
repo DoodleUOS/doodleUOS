@@ -40,7 +40,7 @@ public class TimelineDoodleFragment extends Fragment {
     @InjectView(R.id.button_map)
     Button mButtonMap;
     @InjectView(R.id.button_map2)
-    Button mButtonMap2;
+    Button mButtonCamera;
 
     TimeLineAdapter mAdapter;
 
@@ -100,11 +100,12 @@ public class TimelineDoodleFragment extends Fragment {
                 startActivity(mapIntent);
             }
         });
-        mButtonMap2.setOnClickListener(new View.OnClickListener() {
+
+        mButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapIntent = new Intent(getActivity(), CameraProjectActivity.class);
-                startActivity(mapIntent);
+                Intent cameraIntent = new Intent(getActivity(), CameraProjectActivity.class);
+                startActivity(cameraIntent);
             }
         });
     }
