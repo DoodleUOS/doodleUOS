@@ -21,7 +21,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="등록된 낙서가 없습니다."
         android:id="@+id/textView"
-        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
