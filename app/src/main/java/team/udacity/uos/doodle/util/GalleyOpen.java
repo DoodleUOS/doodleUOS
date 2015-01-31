@@ -24,7 +24,7 @@ public class GalleyOpen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doodle);
+        setContentView(R.layout.fragment_doodle);
 
         mImageButton = (Button) findViewById(R.id.load_picture);
         mImageButton.setOnClickListener(new View.OnClickListener() {

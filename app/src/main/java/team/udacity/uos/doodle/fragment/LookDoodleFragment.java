@@ -22,7 +22,7 @@ public class LookDoodleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        RelativeLayout layout = (RelativeLayout)inflater.inflate(R.layout.activity_lookdoodle_detail, container, false);
+        RelativeLayout layout = (RelativeLayout)inflater.inflate(R.layout.fragment_lookdoodle_noitem, container, false);
 
         return layout;
     }
