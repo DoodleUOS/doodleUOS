@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.facebook.widget.ProfilePictureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
+import team.udacity.uos.doodle.activity.CameraProjectActivity;
 import team.udacity.uos.doodle.activity.MapActivity;
 import team.udacity.uos.doodle.adapter.TimeLineAdapter;
 import team.udacity.uos.doodle.model.TimeLine;
@@ -71,6 +71,10 @@ public class TimelineDoodleFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // 인행아 여기에 클릭했을때 이벤트 넣으면 돼
+                        Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+                        mapIntent.putExtra("lat",mAdapter.getItem(position).getDooLat());
+                        mapIntent.putExtra("long",mAdapter.getItem(position).getDooLong());
+                        startActivity(mapIntent);
                     }
                 });
             }
@@ -99,9 +103,7 @@ public class TimelineDoodleFragment extends Fragment {
         mButtonMap2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapIntent = new Intent(getActivity(), MapActivity.class);
-                mapIntent.putExtra("lat",37.58342);
-                mapIntent.putExtra("long",127.054958);
+                Intent mapIntent = new Intent(getActivity(), CameraProjectActivity.class);
                 startActivity(mapIntent);
             }
         });
