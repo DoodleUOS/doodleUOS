@@ -23,14 +23,14 @@
         android:text="Map Activity"/>
 
     <Button
-        android:id="@+id/button_map2"
+        android:id="@+id/button_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:text="Map Activity 좌표지정"/>
+        android:text="AR Search"/>
 
 
 </RelativeLayout>
