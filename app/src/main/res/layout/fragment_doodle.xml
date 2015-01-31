@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="team.udacity.uos.doodle.util.GalleyOpen"
     android:weightSum="8">
 
     <EditText
@@ -35,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_photo" />
+
         <ImageButton
             android:id="@+id/tag_user"
             android:layout_width="wrap_content"
@@ -43,8 +46,8 @@
 
 
         <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:id="@+id/imageView"
             android:layout_above="@id/load_picture"
