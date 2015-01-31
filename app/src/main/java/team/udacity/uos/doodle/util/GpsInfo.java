@@ -14,7 +14,7 @@ import android.provider.Settings;
 
 public class GpsInfo extends Service implements LocationListener {
 
-    private final Context mContext;
+    private Context mContext;
 
     // 현재 GPS 사용유무
     boolean isGPSEnabled = false;
@@ -36,6 +36,10 @@ public class GpsInfo extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
     protected LocationManager locationManager;
+
+    public GpsInfo(){
+
+    }
 
     public GpsInfo(Context context) {
         this.mContext = context;
