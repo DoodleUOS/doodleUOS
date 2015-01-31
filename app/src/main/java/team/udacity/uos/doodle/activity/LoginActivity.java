@@ -97,6 +97,9 @@ public class LoginActivity extends Activity {
                 Log.i("gcm","No calid Google Play Services APK found");
             }
 
+            SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+            syncDoodle(prefs.getInt(Constants.USER_NO, 0));
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
