@@ -69,8 +69,6 @@ public class DoodleFragment extends Fragment {
     private static int RESULT_LOAD_IMAGE = 1;
     private String mImagePath = "";
 
-    private int dooNo = 7;  // 임시
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,11 +97,7 @@ public class DoodleFragment extends Fragment {
         mTagUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mDetailIntent = new Intent(getActivity(), DetailViewActivity.class);
-                mDetailIntent.putExtra("doodleNo", dooNo);
-                startActivity(mDetailIntent);
 
-//                Toast.makeText(getActivity(), "친구 태그", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -164,10 +158,10 @@ public class DoodleFragment extends Fragment {
                             }.execute();
 
                             Toast.makeText(getActivity(), "메모를 업로드하였습니다.", Toast.LENGTH_SHORT).show();
-                            dooNo = response.getDooNo();
-//                            Intent mDetailIntent = new Intent(getActivity(), DetailViewActivity.class);
-//                            mDetailIntent.putExtra("doodleNo", response.getDooNo());
-//                            startActivity(mDetailIntent);
+
+                            Intent mDetailIntent = new Intent(getActivity(), DetailViewActivity.class);
+                            mDetailIntent.putExtra("doodleNo", response.getDooNo());
+                            startActivity(mDetailIntent);
                         }
                     }
                 };
