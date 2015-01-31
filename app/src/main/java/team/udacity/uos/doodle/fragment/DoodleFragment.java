@@ -55,7 +55,7 @@ public class DoodleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.activity_doodle, container, false);
+        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.fragment_doodle, container, false);
 
         ButterKnife.inject(this, layout);
 

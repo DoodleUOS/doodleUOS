@@ -51,7 +51,7 @@ public class TimelineDoodleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_timelinedoodle, container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_timelinedoodle, container, false);
 
         ButterKnife.inject(this, layout);
         init();
