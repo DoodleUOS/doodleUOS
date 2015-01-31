@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import butterknife.InjectView;
 import team.udacity.uos.doodle.R;
 
 /**
@@ -14,15 +16,14 @@ import team.udacity.uos.doodle.R;
  */
 public class LookDoodleFragment extends Fragment {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    @InjectView(R.id.no_doodle_text)
+    TextView noDoodleText;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        RelativeLayout layout = (RelativeLayout)inflater.inflate(R.layout.fragment_lookdoodle_noitem, container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_lookdoodle, container, false);
 
         return layout;
     }
