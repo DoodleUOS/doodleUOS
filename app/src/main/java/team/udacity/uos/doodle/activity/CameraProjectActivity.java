@@ -76,7 +76,7 @@ public class CameraProjectActivity extends Activity {
             @Override
             protected void onPostExecute(List<Doodle> list) {
                 for (Doodle item : list){
-                    if (cnt > 1) break;
+                    if (cnt > 3) break;
                     else {
                         myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(CameraProjectActivity.this, item));
                         System.out.println("myBitmap [" + cnt + "] = " + myRenderer.mDoodleBitmap[cnt]);
