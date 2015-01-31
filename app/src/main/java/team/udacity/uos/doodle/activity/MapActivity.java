@@ -21,21 +21,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     // GPSTracker class
     private GpsInfo gps;
+    private double latitude = 0;
+    private double longitude = 0;
 
     @Override
     public void onMapReady(GoogleMap map) {
-
-
-        double latitude =0;
-        double longitude = 0;
+//        double latitude = 0;
+//        double longitude = 0;
 
         gps = new GpsInfo(MapActivity.this);
         // GPS 사용유무 가져오기
         if (gps.isGetLocation()) {
+            Bundle bundle = getIntent().getExtras();
+            latitude = bundle.getDouble("lat");
+            longitude = bundle.getDouble("long");
 
-
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
+            if(latitude == 0 && longitude == 0){        // 지정된 좌표가 없으면 현재 위치
+                latitude = gps.getLatitude();
+                longitude = gps.getLongitude();
+            }
         } else {
             // GPS 를 사용할수 없으므로
             gps.showSettingsAlert();
@@ -49,6 +53,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

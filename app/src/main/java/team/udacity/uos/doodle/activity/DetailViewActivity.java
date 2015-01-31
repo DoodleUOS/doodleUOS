@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,12 +50,22 @@ public class DetailViewActivity extends ActionBarActivity {
         Response.Listener<Doodle> listener = new Response.Listener<Doodle>() {
             @Override
             public void onResponse(Doodle response) {
-                Toast.makeText(getBaseContext(), "[성공] 글번호 : " + response.getDooNo() + " 작성자번호 : " + response.getDooMemNo() + " 글 내용 : " + response.getDooCon(), Toast.LENGTH_SHORT).show();
+                if(response.getDooNo() == 0){
+                    Toast.makeText(getBaseContext(), "[실패]", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(getBaseContext(), "[성공] 글번호 : " + response.getDooNo() + " 작성자번호 : " + response.getDooMemNo() + " 글 내용 : " + response.getDooCon()
+                        + " 작성자 이름 : " + response.getMemName(), Toast.LENGTH_SHORT).show();
                 mTextViewDetailLocation.setText(response.getDooLoca());
-                mTextViewDetailAuth.setText("작성자");
+                mTextViewDetailAuth.setText(response.getMemName());
                 mTextViewDetailContext.setText(response.getDooCon());
                 mTextViewDetailDate.setText(response.getDooDate());
-                Glide.with(DetailViewActivity.this).load("http://codingsroom.com/doodleuos/upload/20150128204022.jpg").into(mImageViewDetailAuth);
+                if(response.getDooUrl().length() != 0){
+                    mImageViewDetailContext.setVisibility(View.VISIBLE);
+                    Glide.with(DetailViewActivity.this).load("http://codingsroom.com/doodleuos/upload/" + response.getDooUrl()).into(mImageViewDetailContext);
+                }
+
             }
         };
 

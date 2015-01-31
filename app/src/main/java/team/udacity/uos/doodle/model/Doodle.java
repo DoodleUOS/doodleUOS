@@ -21,6 +21,16 @@ public class Doodle {
     private Double dooLat;
     @DatabaseField
     private Double dooLong;
+    @DatabaseField
+    private String memName;
+    @DatabaseField
+    private String memFbNo;
+    @DatabaseField
+    private int tagTar;
+    @DatabaseField
+    private String memNameT;
+    @DatabaseField
+    private String memFbNoT;
 
     public Doodle(){
 
@@ -88,5 +98,37 @@ public class Doodle {
 
     public void setDooLong(Double dooLong) {
         this.dooLong = dooLong;
+    }
+
+    public String getMemFbNo() { return memFbNo; }
+
+    public void setMemFbNo(String memFbNo) { this.memFbNo = memFbNo; }
+
+    public String getMemName() { return memName; }
+
+    public void setMemName(String memName) { this.memName = memName; }
+
+    public int getTagTar() {
+        return tagTar;
+    }
+
+    public void setTagTar(int tagTar) {
+        this.tagTar = tagTar;
+    }
+
+    public String getMemNameT() {
+        return memNameT;
+    }
+
+    public void setMemNameT(String memNameT) {
+        this.memNameT = memNameT;
+    }
+
+    public String getMemFbNoT() {
+        return memFbNoT;
+    }
+
+    public void setMemFbNoT(String memFbNoT) {
+        this.memFbNoT = memFbNoT;
     }
 }

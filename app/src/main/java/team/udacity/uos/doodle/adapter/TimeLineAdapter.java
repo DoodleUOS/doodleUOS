@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.facebook.widget.ProfilePictureView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,20 +62,21 @@ public class TimeLineAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         SharedPreferences prefs = mContext.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        int myNo = prefs.getInt(Constants.USER_NO, 0);
+        int myNo = prefs.getInt(Constants.USER_NO, 0);
         // 자료가 없어서 인행이껄로 잠시 대체
-        int myNo = 2;
         String messege = "";
 
         if (timeline.getDooMemNo() == myNo){
             if(timeline.getTagTar() != 0 ){
-                messege = String.format("%s에서 %s 님에게 낙서를 남겼습니다.", timeline.getDooLoca(), timeline.getMemNameT());
+                messege = String.format("%s 에서 %s 님에게 낙서를 남겼습니다.", timeline.getDooLoca(), timeline.getMemNameT());
             } else {
                 messege = String.format("%s 에 낙서를 남겼습니다.", timeline.getDooLoca());
             }
+            holder.profilePictureView.setProfileId(timeline.getMemFbNo());
         } else {
             if(timeline.getTagTar() == myNo){
-                messege = String.format("%s 님이 %s에서 나에게 낙서를 남겼습니다." ,timeline.getMemNameT() ,timeline.getDooLoca());
+                messege = String.format("%s 님이 %s 에서 나에게 낙서를 남겼습니다." ,timeline.getMemNameT() ,timeline.getDooLoca());
+                holder.profilePictureView.setProfileId(timeline.getMemFbNoT());
             }
         }
         holder.message.setText(messege);
@@ -84,6 +87,8 @@ public class TimeLineAdapter extends BaseAdapter {
 
     public class ViewHolder {
         public TimeLine timeline;
+        @InjectView(R.id.timeline_img)
+        ProfilePictureView profilePictureView;
         @InjectView(R.id.timeline_messege)
         TextView message;
         @InjectView(R.id.timeline_date)
@@ -91,6 +96,7 @@ public class TimeLineAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             ButterKnife.inject(this, view);
+            profilePictureView.setCropped(true);
         }
 
     }
