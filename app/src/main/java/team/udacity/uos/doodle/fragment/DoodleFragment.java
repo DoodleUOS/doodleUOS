@@ -47,6 +47,7 @@ import team.udacity.uos.doodle.network.VolleyHelper;
 import team.udacity.uos.doodle.network.request.DoodleUploadRequest;
 import team.udacity.uos.doodle.util.Constants;
 import team.udacity.uos.doodle.util.DBHelper;
+import team.udacity.uos.doodle.util.GpsInfo;
 
 /**
  * Created by include on 2015. 1. 21..
@@ -68,6 +69,10 @@ public class DoodleFragment extends Fragment {
 
     private static int RESULT_LOAD_IMAGE = 1;
     private String mImagePath = "";
+
+    private GpsInfo gps;
+    private double latitude = 0;
+    private double longitude = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,14 +119,24 @@ public class DoodleFragment extends Fragment {
                     return;
                 }
 
+                gps = new GpsInfo(getActivity());
+                // GPS 사용유무 가져오기
+                if (gps.isGetLocation()) {
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
+                }
+
                 SharedPreferences prefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
                 Doodle mDoodle = new Doodle();
-                mDoodle.setDooMemNo(prefs.getInt(Constants.USER_NO, -1));  // 임시
+                mDoodle.setDooMemNo(prefs.getInt(Constants.USER_NO, -1));
                 mDoodle.setDooLoca(mLocation);
                 mDoodle.setDooCon(mContext);
-                mDoodle.setDooLat(37.570267);    // 임시
-                mDoodle.setDooLong(126.987517);   // 임시
+                mDoodle.setDooLat(latitude);
+                mDoodle.setDooLong(longitude);
 
                 // 메모 하나 받아오는 통신
                 Response.Listener<Doodle> listener = new Response.Listener<Doodle>() {
@@ -153,7 +168,6 @@ public class DoodleFragment extends Fragment {
                                 protected void onPostExecute(List<Doodle> doodles) {
                                     // 여기서 하고싶은거 하면 됨
                                     Log.i("Help222", "Database size : " + doodles.size());
-                                    Log.i("MyTag", "Database size : " + doodles.size());
                                 }
                             }.execute();
 
