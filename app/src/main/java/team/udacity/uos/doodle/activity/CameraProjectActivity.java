@@ -59,8 +59,6 @@ public class CameraProjectActivity extends Activity {
         glView.setRenderer( myRenderer );
         // Now set this as the main view.
 
-
-
         Log.i("Help", "logcat starts");
         new AsyncTask<Void, Void, List<Doodle>>(){
 
@@ -76,14 +74,11 @@ public class CameraProjectActivity extends Activity {
             @Override
             protected void onPostExecute(List<Doodle> list) {
                 for (Doodle item : list){
-                    if (cnt > 1) break;
+                    if (cnt > 3) break;
                     else {
                         myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(CameraProjectActivity.this, item));
-                        System.out.println("myBitmap [" + cnt + "] = " + myRenderer.mDoodleBitmap[cnt]);
                         cnt++;
                     }
-
-                    //
                 }
                 setContentView( glView );
 
@@ -110,8 +105,6 @@ public class CameraProjectActivity extends Activity {
     private Bitmap getScreenViewBitmap(View v) {
         v.setDrawingCacheEnabled(true);
 
-        System.out.println("myView = " + v.toString());
-
         // this is the important code :)
         // Without it the view will have a dimension of 0,0 and the bitmap will be null
         v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
@@ -120,8 +113,6 @@ public class CameraProjectActivity extends Activity {
 
         v.buildDrawingCache(true);
         Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
-
-        System.out.println("myBitmap = " + b.toString());
 
         v.setDrawingCacheEnabled(false); // clear drawing cache
 
