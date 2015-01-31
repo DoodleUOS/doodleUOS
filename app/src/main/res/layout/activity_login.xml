@@ -6,7 +6,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="team.udacity.uos.doodle.activity.LoginActivity">
+                tools:context="team.udacity.uos.doodle.activity.LoginActivity"
+    android:background="@drawable/background_doodle_text">
 
     <com.facebook.widget.LoginButton
         android:id="@+id/login_facebook_btn"
@@ -15,5 +16,19 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/facebook_login_text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/real_app_name"
+        android:id="@+id/login_app_name"
+        android:layout_marginTop="125dp"
+        android:textSize="80dp"
+        android:layout_marginLeft="62dp"
+        android:layout_marginStart="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
