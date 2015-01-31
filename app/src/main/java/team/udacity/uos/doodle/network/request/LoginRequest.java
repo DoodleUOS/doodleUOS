@@ -24,7 +24,7 @@ public class LoginRequest extends BaseRequest{
     private String mId;
     private String mName;
     private String mLink;
-    private String mregid;
+    private String mRegid;
 
 
     public LoginRequest(Context context, Response.Listener<Member> listener, Response.ErrorListener errorListener) {
@@ -40,8 +40,7 @@ public class LoginRequest extends BaseRequest{
         params.put("fbno", mId);
         params.put("name", mName);
         params.put("fburl", mLink);
-        params.put("id", "qwerty");
-        params.put("regid",mregid);
+        params.put("id", mRegid);
         return params;
     }
 
@@ -49,7 +48,7 @@ public class LoginRequest extends BaseRequest{
         mId = id;
         mName = name;
         mLink = link;
-        mregid = regId;
+        mRegid = regId;
     }
 
     @Override
