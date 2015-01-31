@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.widget.ProfilePictureView;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -67,6 +68,8 @@ public class DoodleFragment extends Fragment {
     ImageButton mTagUser;
     @InjectView(R.id.imageView)
     ImageView mImageView;
+    @InjectView(R.id.tag_user_image)
+    ProfilePictureView mUserImage;
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_TAG_FRIEND = 2;
@@ -221,9 +224,11 @@ public class DoodleFragment extends Fragment {
 
         // 친구 태그
         if(requestCode == RESULT_TAG_FRIEND){
-          mTagNo = data.getIntExtra(Constants.MEMBER_NO, 0);
-          mTagFbNo = data.getStringExtra(Constants.MEMBER_FB_ID);
-          mTagName = data.getStringExtra(Constants.MEMBER_NAME);
+            mTagNo = data.getIntExtra(Constants.MEMBER_NO, 0);
+            mTagFbNo = data.getStringExtra(Constants.MEMBER_FB_ID);
+            mTagName = data.getStringExtra(Constants.MEMBER_NAME);
+            mUserImage.setVisibility(View.VISIBLE);
+            mUserImage.setProfileId(mTagFbNo);
         }
         // 그림 불러오기
         else if(requestCode == RESULT_LOAD_IMAGE){
