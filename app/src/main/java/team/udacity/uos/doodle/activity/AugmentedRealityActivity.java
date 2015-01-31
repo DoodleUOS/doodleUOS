@@ -23,7 +23,7 @@ import team.udacity.uos.doodle.model.Doodle;
 import team.udacity.uos.doodle.util.Util;
 import team.udacity.uos.doodle.view.SimpleDoodleView;
 
-public class CameraProjectActivity extends Activity {
+public class AugmentedRealityActivity extends Activity {
 
     GLClearRenderer myRenderer = new GLClearRenderer();
     private HeadTracker mHeadTracker;
@@ -64,7 +64,7 @@ public class CameraProjectActivity extends Activity {
 
             @Override
             protected List<Doodle> doInBackground(Void... params) {
-                List<Doodle> result = Util.getDoodles(CameraProjectActivity.this);
+                List<Doodle> result = Util.getDoodles(AugmentedRealityActivity.this);
                 for(Doodle item : result){
                     Log.i("Help", "item : " + item.getDooLoca());
                 }
@@ -76,14 +76,14 @@ public class CameraProjectActivity extends Activity {
                 for (Doodle item : list){
                     if (cnt > 3) break;
                     else {
-                        myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(CameraProjectActivity.this, item));
+                        myRenderer.mDoodleBitmap[cnt] = getScreenViewBitmap(new SimpleDoodleView(AugmentedRealityActivity.this, item));
                         cnt++;
                     }
                 }
                 setContentView( glView );
 
                 // Now also create a view which contains the camera preview...
-                CameraView cameraView = new CameraView( CameraProjectActivity.this );
+                CameraView cameraView = new CameraView( AugmentedRealityActivity.this );
                 // ...and add it, wrapping the full screen size.
                 addContentView( cameraView, new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT ) );
             }
